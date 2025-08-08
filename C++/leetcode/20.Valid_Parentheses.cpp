@@ -1,7 +1,9 @@
 // 20. Допустимые скобки
 
 #include <iostream>
+#include <map>
 #include <stack>
+
 using namespace std;
 
 class Solution {
@@ -38,8 +40,39 @@ public:
   }
 };
 
+// с использованем map
+
+class Solution {
+public:
+  bool isValid(string s) {
+    std::map<char, char> br_map;
+    br_map['('] = ')';
+    br_map['{'] = '}';
+    br_map['['] = ']';
+    std::stack<char> br_stack;
+    for (int i = 0; i < s.size(); i++) {
+      if (br_map.find(s[i]) != br_map.end()) {
+        br_stack.push(s[i]);
+      } else {
+        if (br_stack.empty()) {
+          br_stack.push(s[i]);
+          break;
+        } else {
+          if (br_map[br_stack.top()] == s[i]) {
+            br_stack.pop();
+          } 
+          else {
+            break;
+          }
+        }
+      }
+    }
+    return br_stack.empty();
+  }
+};
+
 int main(int argc, char const *argv[]) {
   Solution a;
-  std::cout << a.isValid("([]{()})");
+  std::cout << a.isValid("(){[]}");
   return 0;
 }
