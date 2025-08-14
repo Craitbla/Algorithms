@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "ListNode",
+            "request": "launch",
+            "mainClass": "ListNode",
+            "projectName": "Algorithms_3f3bab64"
+        },
+        {
             "type": "lldb",
             "request": "launch",
             "name": "Debug",
