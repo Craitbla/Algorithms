@@ -1,14 +1,36 @@
 public class Disguise {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+
         System.out.println("Вывод: Введите “1” для обработки ФИО и “2” для обработки email");
-        try {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int inputInt = 0;
+            inputInt = scanner.getInt();
+            StringBuilder sb;
+            sb = scanner.getLine();
+            switch (inputInt) {
+                case 1:
+                    disguiseFullName(sb);
+                    break;
+                case 2:
+                    disguiseEmail(sb);
+                    break;
+                default:
+                    System.out.println("Только 1 или 2");
+            }
 
         } catch (Exception e) {
-            System.out.println();
+            System.out.println("Попробуйте еще раз");
         }
-        scanner.close();
+
+    }
+
+    public static void disguiseFullName(StringBuilder sb) {
+
+    }
+
+    public static void disguiseEmail(StringBuilder sb) {
+
     }
 
 }
