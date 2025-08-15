@@ -1,12 +1,32 @@
 import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
 
 //Мы можем наследовать только от одного класса, в отличие, например, от языка С++, где имеется множественное наследование.
+
 //Enum class — это настоящий класс со всеми вытекающими из этого возможностями, но от него невозможно наследоваться.
+
+//программируй на уровне интерфейсов, а не реализаций
+
+//weapons и curWeapon - это "венгерская нотация", которая не принята в Java
+
+//Полиморфизм:
+//В Java все методы виртуальные по умолчанию (как virtual в C++)
+//Для запрета переопределения используется final
 
 public class Classes { // loader
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         Player p1 = new Player();
-        p1.weaponChoise();
+
+        p1.weaponChoise(scanner);
+        p1.shot();
+
+        Weapon newW = new WaterPistol();
+        p1.addWeapon(newW);
+        p1.weaponChoise(scanner);
+        p1.shot();
+        scanner.close();
     }
 }
 
@@ -14,82 +34,115 @@ interface Weapon {
     default void shot() {
         System.out.println("У оружия не прописали звук");
     }
+
+    String getName();
 }
 
 class Pistol implements Weapon {
+    @Override
     public void shot() {
         System.out.println("Пиу");
+    }
+
+    @Override
+    public String getName() {
+        return "Пистолет";
     }
 }
 
 class MachineGun implements Weapon {
+    @Override
     public void shot() {
         System.out.println("Ра-та-та-та");
+    }
+
+    @Override
+    public String getName() {
+        return "Автомат";
     }
 }
 
 class RPG implements Weapon {
+    @Override
     public void shot() {
         System.out.println("Буууууум");
+    }
+
+    @Override
+    public String getName() {
+        return "РПГ";
     }
 }
 
 class Slingshot implements Weapon {
+    @Override
     public void shot() {
         System.out.println("Птююю");
+    }
+
+    @Override
+    public String getName() {
+        return "Рогатка";
     }
 }
 
 class WaterPistol implements Weapon {
+    @Override
     public void shot() {
         System.out.println("Вшшшшшшшшш");
+    }
+
+    @Override
+    public String getName() {
+        return "Водный пистолет";
     }
 }
 
 class Player {
-    public enum WeaponType { // по идее чисто для weaponChoise()
-        PISTOL("Пистолет"),
-        MACHINEGUN("Автомат"),
-        RPG("РПГ"),
-        SLINGSHOT("Рогатка"),
-        WATERPISTOL("Водный пистолет");
+    public Player() {
+        weapons.add(new Pistol());
+        weapons.add(new MachineGun());
+        weapons.add(new RPG());
+        weapons.add(new Slingshot());
+    }
 
-        private final String weaponName_;
+    private final List<Weapon> weapons = new ArrayList<>();
 
-        WeaponType(String weaponName) {
-            weaponName_ = weaponName;
+    private Weapon curWeapon;
+
+    public void shot() {
+        if (curWeapon == null) {
+            System.out.println("Оружие не выбрано!");
+            return;
         }
+        curWeapon.shot();
+    }
 
-        @Override
-        public String toString() {
-            return weaponName_;
+    public void addWeapon(Weapon newWeapon) {
+        weapons.add(newWeapon);
+    }
+
+    public void setWeapon(Weapon weapon) {
+        curWeapon = weapon;
+    }
+
+    public void printWeapons() {
+        for (int i = 0; i < weapons.size(); i++) {
+            System.out.println((i + 1) + " " + weapons.get(i).getName());
         }
     }
 
-    public void weaponChoise() {
-        Scanner scanner = new Scanner(System.in);
+    public void weaponChoise(Scanner scanner) {
+        printWeapons();
         int inputInt = 0;
 
-        for (int i = 0; i < WeaponType.values().length; i++) { // WeaponType.values() делает массив
-            System.out.println((i + 1) + " " + WeaponType.values()[i]);
-        }
-
-        inputInt = scanner.nextInt();
-        if (inputInt > 0 && inputInt <= WeaponType.values().length) {
-            WeaponType weapon = WeaponType.values()[inputInt - 1];
-            System.out.println("Вы выбрали: " + weapon);
-            shot();
-        } else {
+        try {
+            inputInt = scanner.nextInt();
+            setWeapon(weapons.get(inputInt - 1));
+            System.out.println("Вы выбрали: " + curWeapon.getName());
+        } catch (Exception e) {
             System.out.println("Неверный выбор!");
         }
 
-        scanner.close();
-
     }
-
-    public void shot() {
-        weapon.shot();
-    }
-
-    private Weapon weapon;
 }
