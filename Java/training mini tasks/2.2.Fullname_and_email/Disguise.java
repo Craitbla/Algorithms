@@ -19,7 +19,20 @@
 //и управление передаётся в блок catch или finally. Дальнейший код внутри try после строки с ошибкой не выполняется. 
 //Возврат альтернативного результата в catch
 
+//по сути единственное почему стоило именно в данном случае пробрасывать потому что метод должен делать только одну вещь, а принт ошибки в валидации не должен быть
 import java.util.Scanner;
+
+class WrongNameException extends Exception {
+    public WrongNameException(String message) {
+        super(message);
+    }
+}
+
+class WrongEmailException extends RuntimeException {
+    public WrongEmailException(String message) {
+        super(message);
+    }
+}
 
 public class Disguise {
 
