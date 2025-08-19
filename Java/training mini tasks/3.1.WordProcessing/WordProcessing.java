@@ -31,15 +31,18 @@ public class WordProcessing {
     public static Map<String, Integer> createCounterMap(String[] wordsList) {
         Map<String, Integer> counterMap = new LinkedHashMap<>(); // иначе порядок нахождения потеряется с new
                                                                  // HashMap<>()
-        Integer tmpValue = 0;
         for (String key : wordsList) {
-            if (counterMap.containsKey(key)) {
-                tmpValue = counterMap.get(key);
-                counterMap.replace(key, ++tmpValue);
-            } else {
-                counterMap.put(key, 1);
-            }
+            counterMap.merge(key, 1, Integer::sum);
         }
+        // Integer tmpValue = 0; //много инструментов для избавления от лишних циклов
+        // for (String key : wordsList) {
+        // if (counterMap.containsKey(key)) {
+        // tmpValue = counterMap.get(key);
+        // counterMap.replace(key, ++tmpValue);
+        // } else {
+        // counterMap.put(key, 1);
+        // }
+        // }
         return counterMap;
     }
 
@@ -56,27 +59,31 @@ public class WordProcessing {
     // entrySet() — метод, который возвращает множество (Set) всех пар Map.Entry из
     // Map.
     public static void printСommonAndRareWords(Map<String, Integer> counterMap) {
-        List<Map.Entry<String, Integer>> counterList = new ArrayList<>(counterMap.entrySet());
+        // List<Map.Entry<String, Integer>> counterList = new
+        // ArrayList<>(counterMap.entrySet());
 
         // List<Map.Entry<String, Integer>> commonSortedList = counterList; //я так и
         // поняла что так нельзя
-        List<Map.Entry<String, Integer>> commonSortedList = new ArrayList<>(counterList);
-        commonSortedList.sort((a, b) -> b.getValue().compareTo(a.getValue()));
+        // List<Map.Entry<String, Integer>> commonSortedList = new
+        // ArrayList<>(counterList);
+        // commonSortedList.sort((a, b) -> b.getValue().compareTo(a.getValue()));
 
-        List<Map.Entry<String, Integer>> rareSortedList = new ArrayList<>(counterList);
-        rareSortedList.sort((a, b) -> a.getValue().compareTo(b.getValue()));
-
-        // Map<String, Integer> rareSortedMap = counterMap.entrySet().stream() //круто
-        // конечно, только не экономно
-        // .sorted(Map.Entry.<String, Integer>comparingByValue()).limit(5)
-        // .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldVal,
-        // newVal) -> oldVal,
-        // LinkedHashMap::new));
+        // List<Map.Entry<String, Integer>> rareSortedList = new
+        // ArrayList<>(counterList);
+        // rareSortedList.sort((a, b) -> a.getValue().compareTo(b.getValue()));
 
         System.out.println("\n5 самых часто встречающихся слов:");
-        printList(commonSortedList, 5);
+        counterMap.entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed()).limit(5)
+                .forEach(entry -> System.out.format("%s - %d\n", entry.getKey(), entry.getValue()));
+        // .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldVal,
+        // newVal) -> oldVal,
+        // LinkedHashMap::new)); // круто, круто
+
         System.out.println("\n5 самых редко встречающихся слов:");
-        printList(rareSortedList, 5);
+        counterMap.entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue()).limit(5)
+                .forEach(entry -> System.out.format("%s - %d\n", entry.getKey(), entry.getValue()));
 
     }
 
