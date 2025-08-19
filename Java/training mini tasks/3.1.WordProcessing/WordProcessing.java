@@ -56,38 +56,37 @@ public class WordProcessing {
     // entrySet() — метод, который возвращает множество (Set) всех пар Map.Entry из
     // Map.
     public static void printСommonAndRareWords(Map<String, Integer> counterMap) {
-
         List<Map.Entry<String, Integer>> counterList = new ArrayList<>(counterMap.entrySet());
-        List<Map.Entry<String, Integer>> commonSortedList = counterList;
-        commonSortedList.sort((a, b) -> a.getValue().compareTo(b.getValue()));
-        ;
-        List<Map.Entry<String, Integer>> rareSortedList = counterList;
-        rareSortedList.sort((a, b) -> b.getValue().compareTo(a.getValue()));
-        // Map<String, Integer> rareSortedMap = counterMap.entrySet().stream()
+
+        // List<Map.Entry<String, Integer>> commonSortedList = counterList; //я так и
+        // поняла что так нельзя
+        List<Map.Entry<String, Integer>> commonSortedList = new ArrayList<>(counterList);
+        commonSortedList.sort((a, b) -> b.getValue().compareTo(a.getValue()));
+
+        List<Map.Entry<String, Integer>> rareSortedList = new ArrayList<>(counterList);
+        rareSortedList.sort((a, b) -> a.getValue().compareTo(b.getValue()));
+
+        // Map<String, Integer> rareSortedMap = counterMap.entrySet().stream() //круто
+        // конечно, только не экономно
         // .sorted(Map.Entry.<String, Integer>comparingByValue()).limit(5)
         // .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldVal,
         // newVal) -> oldVal,
         // LinkedHashMap::new));
 
-        // Map<String, Integer> commonSortedMap = counterMap.entrySet().stream()
-        // .sorted(Map.Entry.<String, Integer>comparingByValue().reversed()).limit(5)
-        // .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldVal,
-        // newVal) -> oldVal,
-        // LinkedHashMap::new));
-        // System.out.println("\n5 самых часто встречающихся слов:");
-        // printMap(commonSortedMap);
-        // System.out.println("\n5 самых редко встречающихся слов:");
-        // printMap(rareSortedMap);
         System.out.println("\n5 самых часто встречающихся слов:");
-        printList(commonSortedMap);
+        printList(commonSortedList, 5);
         System.out.println("\n5 самых редко встречающихся слов:");
-        printList(rareSortedMap);
+        printList(rareSortedList, 5);
 
     }
 
-    public static void printList(Map<String, Integer> counterMap) {
-        for (Map.Entry<String, Integer> pair : counterMap.entrySet()) {
-            System.out.format("%s - %d\n", pair.getKey(), pair.getValue());
+    public static void printList(List<Map.Entry<String, Integer>> counterList, int desiredLimit) {
+        int limit = desiredLimit;
+        if (counterList.size() < desiredLimit) {
+            limit = counterList.size();
+        }
+        for (int i = 0; i < limit; i++) {
+            System.out.format("%s - %d\n", counterList.get(i).getKey(), counterList.get(i).getValue());
         }
     }
 
