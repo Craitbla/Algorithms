@@ -66,6 +66,9 @@
         "type_traits": "cpp",
         "utility": "cpp",
         "format": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "set": "cpp",
+        "chrono": "cpp",
+        "stop_token": "cpp"
     }
 }
