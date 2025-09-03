@@ -69,6 +69,8 @@
         "thread": "cpp",
         "set": "cpp",
         "chrono": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "__tree": "cpp",
+        "map": "cpp"
     }
 }
