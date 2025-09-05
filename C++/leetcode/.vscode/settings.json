@@ -71,6 +71,7 @@
         "chrono": "cpp",
         "stop_token": "cpp",
         "__tree": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "unordered_set": "cpp"
     }
 }
