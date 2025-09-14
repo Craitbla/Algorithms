@@ -1,16 +1,31 @@
 public class Program {
     public static void main(String[] args) {
-        Pair<Integer, String> myPair = new Pair<>(2, "wef");
-        System.out.println(myPair.getKey());
-        System.out.println(myPair.getValue());
+        NumPair<Integer, Double> myPair = new NumPair<>(2, 142.23);
+        System.out.println(myPair.average());
+
+        NumPair<Integer, Double> myPair2 = new NumPair<>(2, 1.0);
+        System.out.println(myPair2.average());
+
+        NumPair<Integer, Integer> myPair3 = new NumPair<>(2, 1);
+        System.out.println(myPair3.average());
+
+        NumPair<Long, Double> myPair4 = new NumPair<>(2L, 1.0);
+        System.out.println(myPair4.average());
+
+        NumPair<Long, Float> myPair5 = new NumPair<>(2L, 1.0F);
+        System.out.println(myPair5.average());
     }
 }
 
-class Pair<K, V> {
+// long целый
+// (double) работает только с примитивами
+// даже если .doubleValue() сработает на Double, ничего не будет
+
+class NumPair<K extends Number, V extends Number> {
     private K key;
     private V value;
 
-    public Pair(K newKey, V newValue) {
+    public NumPair(K newKey, V newValue) {
         key = newKey;
         value = newValue;
     }
@@ -21,6 +36,10 @@ class Pair<K, V> {
 
     public V getValue() {
         return value;
+    }
+
+    public double average() {
+        return (key.doubleValue() + value.doubleValue()) / 2.0;
     }
 
 }
