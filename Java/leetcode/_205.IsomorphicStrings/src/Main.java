@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) {
         Solution sol = new Solution();
 
-        System.out.println(sol.isIsomorphic("fgegg", "socoo"));
+        System.out.println(sol.isIsomorphic("badc", "baba"));
     }
 }
 class Solution {
@@ -19,7 +19,10 @@ class Solution {
                 if(checkMap.get(curCharS)!=curCharT){
                     return  false;
                 }
-            } else {
+            } else if(checkMap.containsValue(curCharT)) {
+                return false;
+            }
+            else{
                 checkMap.put(curCharS, curCharT);
             }
 
