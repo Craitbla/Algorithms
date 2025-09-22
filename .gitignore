@@ -5,10 +5,4 @@ a.out
 .idea/
 *.iml
 *.xml
-
-
-# Игнорировать папку node_modules целиком
-node_modules/
-
-# Игнорировать конкретный файл config.ini
-config.ini
+.DS_Store
