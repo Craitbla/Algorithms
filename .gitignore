@@ -1,0 +1,14 @@
+# Игнорировать все файлы .log
+#*.log
+a.out
+.vscode/
+.idea/
+*.iml
+*.xml
+
+
+# Игнорировать папку node_modules целиком
+node_modules/
+
+# Игнорировать конкретный файл config.ini
+config.ini
