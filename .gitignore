@@ -6,3 +6,5 @@ a.out
 *.iml
 *.xml
 .DS_Store
+*.dSYM
+
