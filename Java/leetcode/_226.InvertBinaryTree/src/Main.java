@@ -3,6 +3,16 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.stream.Collectors;
 
+// аналогия параметров метода с ключом от дома,
+// внешняя переменная не меняется, мы внутри можем менять этот ключ,
+// потому что это копия оригинального ключа
+
+// Для примитивов изменить исходную переменную внутри метода невозможно.
+// Для объектов можно изменить их внутреннее состояние,
+// но нельзя переназначить исходную ссылку.
+
+//List<Integer> immutableList = List.of(4, 2, 7); // Нельзя менять вообще
+//List<Integer> mutableList = new ArrayList<>(List.of(4, 2, 7)); // Можно менять
 class TreeNode {
     int val;
     TreeNode left;
@@ -101,8 +111,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Integer[] treeValues = {4, 2, 7, 1, 3, 6, 9};
+//        Integer[] treeValues = {4, 2, 7, 1, 3, 6, 9};
+        Integer[] treeValues = {4, 2};
         TreeNode root = buildTree(treeValues);
+
 
         System.out.println("Исходное дерево:");
         printTree(root);

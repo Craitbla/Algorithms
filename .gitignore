@@ -1,5 +1,5 @@
 # Игнорировать все файлы .log
-#*.log
+*.log
 a.out
 .vscode/
 .idea/
