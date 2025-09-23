@@ -2,6 +2,31 @@ package org.example;
 
 //Проброс исключения//
 
+//Задача 2. Маскирование ФИО и email
+//Приложение просит ввести ФИО или email и маскирует их по следующим
+//правилам:
+//- Для имени: Имя + Отчество + первая буква фамилии с точкой. Если
+//попадаются небуквенные символы (кроме пробела), то выбрасываем
+//проверяемое исключение WrongNameException
+//- Для email: первая буква email + 3 звездочки (***) +“@” + окончание email.
+//Если в почте не указан символ “@” выбрасываем непроверяемое
+//исключение WrongEmailException.
+//Пример 1:
+//Вывод: Введите “1” для обработки ФИО и “2” для обработки email
+//input: 1
+//Вывод: Введите ФИО
+//input: Тарасенко Екатерина Александровна
+//Вывод: Екатерина Александровна Т.
+//Пример 2:
+//Вывод: Введите “1” для обработки ФИО и “2” для обработки email
+//input: 2
+//Вывод: Введите email
+//input: tarasenko@gmail.com
+//Вывод: t***@gmail.com
+
+
+//Если WrongEmailException является непроверяемым исключением (наследуется от RuntimeException),
+// то объявлять его в throws не нужно и даже не рекомендуется.
 import java.util.Scanner;
 
 class WrongNameException extends Exception {
@@ -16,25 +41,31 @@ class WrongEmailException extends RuntimeException {
     }
 }
 
+class Сamoufleur{
+    public Disguise(){
+
+    }
+}
 public class Main {
 
     public static void main(String[] args) {
 
         System.out.println("Вывод: Введите “1” для обработки ФИО и “2” для обработки email");
-        try (Scanner scanner = new Scanner(System.in)) {
+        Scanner scanner = new Scanner(System.in);
+        try {
             int inputInt = Integer.parseInt(scanner.nextLine());
             String inputLine;
             switch (inputInt) {
                 case 1:
                     inputLine = scanner.nextLine();
-                    isValidFullName(inputLine);
-                    System.out.println(disguiseFullName(inputLine));
+                    isValidFullName(inputLine);//throws WrongNameException Проверяемое
+                    System.out.println(disguiseFullName(inputLine));// throws WrongNameException Проверяемое
 
                     break;
                 case 2:
                     inputLine = scanner.nextLine();
-                    isValidEmail(inputLine);
-                    System.out.println(disguiseEmail(inputLine));
+                    isValidEmail(inputLine); //throws WrongEmailException  Непроверяемое
+                    System.out.println(disguiseEmail(inputLine)); //throws WrongEmailException Непроверяемое
 
                     break;
                 default:
@@ -48,6 +79,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Непредвиденная ошибка: " + e.getMessage());
         }
+        scanner.close();
 
     }
 
@@ -61,7 +93,7 @@ public class Main {
 
     }
 
-    public static void isValidEmail(String inputLine) throws WrongEmailException {
+    public static void isValidEmail(String inputLine) {
         if (inputLine == null || inputLine.isEmpty()) {
             throw new WrongEmailException("Почта не может быть пустой");
         }
