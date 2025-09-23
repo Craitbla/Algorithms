@@ -13,19 +13,19 @@ class WrongEmailException extends RuntimeException {
 }
 
 class Camoufleur {
-    public void Disguise(Integer inputInt, String inputLine) throws WrongNameException {
+    public String Disguise(Integer inputInt, String inputLine) throws WrongNameException {
 
-        switch (inputInt) {
-            case 1 -> {
-                isValidFullName(inputLine);//throws WrongNameException Проверяемое
-                System.out.println(disguiseFullName(inputLine));// throws WrongNameException Проверяемое
-            }
-            case 2 -> {
-                isValidEmail(inputLine); //throws WrongEmailException  Непроверяемое
-                System.out.println(disguiseEmail(inputLine)); //throws WrongEmailException Непроверяемое
-            }
+        if (inputInt == 1) {
+            isValidFullName(inputLine);//throws WrongNameException Проверяемое
+            return disguiseFullName(inputLine);// throws WrongNameException Проверяемоe
+        } else {
+            isValidEmail(inputLine); //throws WrongEmailException  Непроверяемое
+            return disguiseEmail(inputLine); //throws WrongEmailException Непроверяемое
         }
+
+
     }
+
 
     public void isValidFullName(String inputLine) throws WrongNameException {
         if (inputLine == null || inputLine.isEmpty()) {
@@ -79,10 +79,10 @@ public class Main {
             try {
                 System.out.println("Введите “1” для обработки ФИО и “2” для обработки email или “3” для выхода");
                 inputInt = Integer.parseInt(scanner.nextLine());
-                if(inputInt == 1 || inputInt == 2) {
+                if (inputInt == 1 || inputInt == 2) {
                     System.out.println("Введите данные для обработки:");
                     inputLine = scanner.nextLine();
-                    camoufleur.Disguise(inputInt, inputLine);
+                    System.out.println(camoufleur.Disguise(inputInt, inputLine));
                 } else if (inputInt == 3) {
                     flagContinue = false;
                     System.out.println("Программа завершена");
