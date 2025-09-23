@@ -1,6 +1,6 @@
 package org.example;
 
-//Проброс исключения
+//Проброс исключения//
 
 import java.util.Scanner;
 
