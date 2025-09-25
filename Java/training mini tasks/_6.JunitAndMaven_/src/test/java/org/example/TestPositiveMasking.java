@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 // не Public!!!  и должен начинаться на Test
 class TestPositiveMasking {
-    private Camoufleur camoufleur = new Camoufleur();
+    final private Camoufleur camoufleur = new Camoufleur();
 
     //    если бы были внут
     @Test
@@ -37,7 +37,7 @@ class TestPositiveMasking {
 }
 
 class TestCheckedExceptions {
-    private Camoufleur camoufleur = new Camoufleur();
+    final private Camoufleur camoufleur = new Camoufleur();
     final int choise = 1;
 
     @Test
@@ -74,7 +74,7 @@ class TestCheckedExceptions {
 
 // Для непроверяемого исключения - ТОЧНО ТАК ЖЕ!
 class TestUncheckedExceptions {
-    private Camoufleur camoufleur = new Camoufleur();
+    final private Camoufleur camoufleur = new Camoufleur();
     final int choise = 2;
 
     @Test
