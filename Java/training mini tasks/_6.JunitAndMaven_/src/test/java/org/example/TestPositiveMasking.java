@@ -1,6 +1,10 @@
 package org.example;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 //"Метод_Условие_ОжидаемыйРезультат".
 //MethodName_StateUnderTest_ExpectedBehavio
 
@@ -12,98 +16,93 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 //Забыла про моки
 //пока первые тесты сделаю без них, чтобы лучше понять
 
-// не Public!!!
+// не Public!!!  и должен начинаться на Test
 class TestPositiveMasking {
-//    @BeforeEach
-//    для создания объекта - бред, потому что все равно нужно
-//    будет возвращать, а это одна строчка
+    private Camoufleur camoufleur = new Camoufleur();
+
+    //    если бы были внут
     @Test
-    void maskFullName_ValidInput_CorrectlyMasked() throws WrongNameException{
-        Camoufleur camoufleur = new Camoufleur();
-        String result =camoufleur.Disguise(1,"Иванова Карина Олеговна");
-        assertEquals("Карина Олеговна И.", result);
+    void maskFullName_ValidInput_CorrectlyMasked() throws WrongNameException {
+        String inputLine = "Иванова Карина Олеговна";
+        String expected = "Карина Олеговна И.";
+        String result = camoufleur.Disguise(1, inputLine);
+        assertEquals(expected, result, "для ФИО'" + inputLine + "' ожидался результат'" + expected + "'");
     }
 
-//    @Test
-//    void maskEmail_ValidInput_CorrectlyMasked() {
-//Camoufleur camoufleur = new Camoufleur();
-//    String result =camoufleur.Disguise(1,"Иванова Карина Олеговна");
-//    assertEquals("Карина Олеговна И.", result);
-//        // Тестируем корректное маскирование email
-//    }
+    @Test
+    void maskEmail_ValidInput_CorrectlyMasked() throws WrongNameException {
+        String result = camoufleur.Disguise(2, "ki225431@gmail.com");
+        assertEquals("k***@gmail.com", result);
+    }
 }
-//
-//class CheckedExeptionsTest {
-//    @Test
-//    void maskFullName_InvalidInput_WrongNameException() {
-//        WrongNameExeption exeption = assertThrows(
-//                WrongNameExeption
-//        )
-//    }
-//
-//}
-//
-//class UncheckedExeptionsTest {
-//    @Test
-//    void maskFullName_ValidInput_CorrectlyMasked() {
-//        // Тестируем корректное маскирование ФИО
-//    }
-//
-//    @Test
-//    void maskEmail_ValidInput_CorrectlyMasked() {
-//        // Тестируем корректное маскирование email
-//    }
-//}
-//public class MyTest {
-//
-//    @BeforeEach
-//    public void setUp() {
-//        // Метод, выполняющийся перед каждым тестовым случаем
-//    }
-//
-//    @AfterEach
-//    public void tearDown() {
-//        // Метод, выполняющийся после каждого тестового случая
-//    }
-//
-//    @Tag("Positive scenario")
-//    @Test
-//    public void testSomething() {
-//        // Тестовый случай
-//    }
-//
-//    @Tag("Positive scenario")
-//    @Test
-//    public void testAnotherThing() {
-//        // Другой тестовый случай
-//    }
-//
-//    @Tag("Negative scenario")
-//    @Test
-//    public void testAnotherThing() {
-//        // Другой тестовый случай
-//    }
-//    import org.junit.jupiter.api.Test;
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//    // Для непроверяемых исключений (например, RuntimeException)
-//    @Test
-//    void testUncheckedException() {
-//        IllegalArgumentException exception = assertThrows(
-//                IllegalArgumentException.class,
-//                () -> methodThatThrowsException()
-//        );
-//        assertEquals("Invalid argument", exception.getMessage());
-//    }
-//
-//    // Для проверяемых исключений (например, IOException)
-//    @Test
-//    void testCheckedException() {
-//        IOException exception = assertThrows(
-//                IOException.class,
-//                () -> methodThatThrowsCheckedException()
-//        );
-//        assertTrue(exception.getMessage().contains("File not found"));
-//    }
-//
-//}
+
+class TestCheckedExceptions {
+    private Camoufleur camoufleur = new Camoufleur();
+    final int choise = 1;
+
+    @Test
+    void maskFullName_EmptyInput_WrongNameException() {
+        WrongNameException exeption = assertThrows(
+                WrongNameException.class,
+                () -> camoufleur.Disguise(choise, null)
+        );
+        Assertions.assertTrue(exeption.getMessage().contains("Имя не может быть пустым"));
+    }
+
+    @Test
+    void maskFullName_DigitInput_WrongNameException() {
+        String inputLine = "Ивано124 Карина Олеговна";
+        WrongNameException exeption = assertThrows(
+                WrongNameException.class,
+                () -> camoufleur.Disguise(choise, inputLine)
+        );
+        Assertions.assertTrue(exeption.getMessage().contains("Имя может содержать только буквы и пробелы: " + inputLine));
+    }
+
+    @Test
+    void maskFullName_InvalidInput_WrongNameException() {
+        String inputLine = "Иванова Карина";
+        WrongNameException exeption = assertThrows(
+                WrongNameException.class,
+                () -> camoufleur.Disguise(choise, inputLine)
+        );
+        Assertions.assertTrue(exeption.getMessage().contains("Ожидается 3 слова: " + inputLine));
+    }
+
+
+}
+
+// Для непроверяемого исключения - ТОЧНО ТАК ЖЕ!
+class TestUncheckedExceptions {
+    private Camoufleur camoufleur = new Camoufleur();
+    final int choise = 2;
+
+    @Test
+    void maskEmail_EmptyInput_WrongEmailException() {
+        WrongEmailException exeption = assertThrows(
+                WrongEmailException.class,
+                () -> camoufleur.Disguise(choise, null)
+        );
+        Assertions.assertTrue(exeption.getMessage().contains("Почта не может быть пустой"));
+    }
+
+    @Test
+    void maskEmail_WithoutDog_WrongEmailException() {
+        String inputLine = "ki225431gmail.com";
+        WrongEmailException exeption = assertThrows(
+                WrongEmailException.class,
+                () -> camoufleur.Disguise(choise, inputLine)
+        );
+        Assertions.assertTrue(exeption.getMessage().contains("Почта должна содержать '@': " + inputLine));
+    }
+
+    @Test
+    void maskEmail_WithoutPartAfterDog_WrongEmailException() {
+        String inputLine = "ki225431@";
+        WrongEmailException exeption = assertThrows(
+                WrongEmailException.class,
+                () -> camoufleur.Disguise(choise, inputLine)
+        );
+        Assertions.assertTrue(exeption.getMessage().contains("Почта должна содержать имя до '@' и вид почты после: " + inputLine));
+    }
+}
