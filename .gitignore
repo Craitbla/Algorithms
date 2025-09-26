@@ -5,6 +5,7 @@ a.out
 .idea/
 *.iml
 *.xml
+!pom.xml
 .DS_Store
 *.dSYM
 

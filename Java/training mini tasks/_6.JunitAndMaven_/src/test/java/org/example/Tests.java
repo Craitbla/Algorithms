@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 //Забыла про моки
 //пока первые тесты сделаю без них, чтобы лучше понять
 
-// не Public!!!  и должен начинаться на Test
-class TestPositiveMasking {
+// не Public!!!  и должен ЗАКАНЧИВАТЬСЯ на Test - *Test.java или *Tests.java
+class PositiveMaskingTest {
     final private Camoufleur camoufleur = new Camoufleur();
 
     //    если бы были внут
@@ -26,7 +26,7 @@ class TestPositiveMasking {
         String inputLine = "Иванова Карина Олеговна";
         String expected = "Карина Олеговна И.";
         String result = camoufleur.Disguise(1, inputLine);
-        assertEquals(expected, result, "для ФИО'" + inputLine + "' ожидался результат'" + expected + "'");
+        assertEquals(expected, result, "для ФИО '" + inputLine + "' ожидался результат '" + expected + "'");
     }
 
     @Test
@@ -36,7 +36,7 @@ class TestPositiveMasking {
     }
 }
 
-class TestCheckedExceptions {
+class CheckedExceptionsTest {
     final private Camoufleur camoufleur = new Camoufleur();
     final int choise = 1;
 
@@ -73,7 +73,7 @@ class TestCheckedExceptions {
 }
 
 // Для непроверяемого исключения - ТОЧНО ТАК ЖЕ!
-class TestUncheckedExceptions {
+class UncheckedExceptionsTest {
     final private Camoufleur camoufleur = new Camoufleur();
     final int choise = 2;
 

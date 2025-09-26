@@ -7,6 +7,7 @@
     <groupId>org.example</groupId>
     <artifactId>_6.JunitAndMaven_</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <url>https://github.com/Craitbla/Algorithms/tree/main/Java/training%20mini%20tasks/_6.JunitAndMaven_</url>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -15,16 +16,7 @@
     </properties>
 
     <!--    <reporting>-->
-    <!--        <plugins>-->
-    <!--            <plugin>-->
-    <!--                <groupId>org.apache.maven.plugins</groupId>-->
-    <!--                <artifactId>maven-surefire-report-plugin</artifactId>-->
-    <!--                <version>3.5.4</version>-->
-    <!--                <configuration>//только провалившиеся тесты высветятся-->
-    <!--                    <showSuccess>false</showSuccess>-->
-    <!--                </configuration>-->
-    <!--            </plugin>-->
-    <!--        </plugins>-->
+
     <!--    </reporting>-->
     <build>
         <plugins>
@@ -38,54 +30,28 @@
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.12.1</version>
             </plugin>
+            <!--            <plugins>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>3.5.4</version>
+                <configuration>
+                    <outputName>JUnit-Examples-Test-Report</outputName>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.4.2</version>
             </plugin>
+            <plugin> <!-- для того чтобы показывало на какой строчке ошибка-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>3.6.0</version>
+            </plugin>
         </plugins>
+        <!--        </plugins>-->
     </build>
-
-    <!--    <build>-->
-    <!--        <plugins>-->
-    <!--            <plugin>-->
-    <!--                <groupId>org.apache.maven.plugins</groupId>-->
-    <!--                <artifactId>maven-surefire-plugin</artifactId>-->
-    <!--                <version>3.5.4</version>-->
-    <!--            </plugin>-->
-    <!--            <plugin>-->
-    <!--                <groupId>org.apache.maven.plugins</groupId>-->
-    <!--                <artifactId>maven-surefire-report-plugin</artifactId>-->
-    <!--                <version>3.5.4</version>-->
-    <!--            </plugin>-->
-    <!--        </plugins>-->
-    <!--    </build>-->
-    <!--    <build>-->
-    <!--        <plugins>-->
-    <!--            <plugin>-->
-    <!--                <groupId>org.apache.maven.plugins</groupId>-->
-    <!--                <artifactId>maven-surefire-plugin</artifactId>-->
-    <!--                <version>3.5.4</version>-->
-    <!--                <configuration>-->
-    <!--                    <includes>-->
-    <!--                        <include>**/*Test.java</include>-->
-    <!--                    </includes>-->
-    <!--                    <systemProperties>-->
-    <!--                        <property>-->
-    <!--                            <name>java.util.logging.config.file</name>-->
-    <!--                            <value>${project.basedir}/src/test/resources/logging.properties</value>-->
-    <!--                        </property>-->
-    <!--                    </systemProperties>-->
-    <!--                    <argLine>-Xmx1024m</argLine>-->
-    <!--                </configuration>-->
-    <!--            </plugin>-->
-    <!--        </plugins>-->
-    <!--    </build>-->
 
     <dependencies>
 
