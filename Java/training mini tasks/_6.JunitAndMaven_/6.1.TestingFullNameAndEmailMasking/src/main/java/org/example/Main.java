@@ -32,25 +32,23 @@ class WrongEmailException extends RuntimeException {
 }
 
 //не парься что это займет время, это большая тренировка и трудное задание, переделывать это нормально
+//главный вопрос жизни, почему это классы, а не просто функциональные интерфейсы
+interface Validator { // все поля в интерфейсе final //Parser parser = null;
 
-interface Validator {
-    String[] isValid(String inputLine) throws WrongNameException;
+    void isValid(String inputLine) throws WrongNameException;
 }
 
 interface Disguiser {
     String disguise(String[] strList);
 }
 
-class FullNameValidator implements Validator {
+interface Parser {
+    String[] parse(String inputLine) throws WrongNameException;
+}
 
+class FullNameParser implements Parser {
     @Override
-    public String[] isValid(String inputLine) throws WrongNameException {
-        if (inputLine == null || inputLine.isEmpty()) {
-            throw new WrongNameException("Имя не может быть пустым");
-        }
-        if (!inputLine.matches("[a-zA-Zа-яА-ЯёЁ\\s]+")) {
-            throw new WrongNameException("Имя может содержать только буквы и пробелы: " + inputLine);
-        }
+    public String[] parse(String inputLine) throws WrongNameException {
         String[] strList = inputLine.split("\\s+");
         if (strList.length != 3) {
             throw new WrongNameException("Ожидается 3 слова: " + inputLine);
@@ -59,20 +57,39 @@ class FullNameValidator implements Validator {
     }
 }
 
+class EmailParser implements Parser {
+    @Override
+    public String[] parse(String inputLine) {
+        String[] strList = inputLine.split("@");
+        if (strList.length != 2) {
+            throw new WrongEmailException("Почта должна содержать имя до '@' и вид почты после: " + inputLine);
+        }
+        return strList;
+    }
+}
+
+class FullNameValidator implements Validator {
+
+    @Override
+    public void isValid(String inputLine) throws WrongNameException {
+        if (inputLine == null || inputLine.isEmpty()) {
+            throw new WrongNameException("Имя не может быть пустым");
+        }
+        if (!inputLine.matches("[a-zA-Zа-яА-ЯёЁ\\s]+")) {
+            throw new WrongNameException("Имя может содержать только буквы и пробелы: " + inputLine);
+        }
+    }
+}
+
 class EmailValidator implements Validator {
     @Override
-    public String[] isValid(String inputLine) {
+    public void isValid(String inputLine) {
         if (inputLine == null || inputLine.isEmpty()) {
             throw new WrongEmailException("Почта не может быть пустой");
         }
         if (!inputLine.contains("@")) {
             throw new WrongEmailException("Почта должна содержать '@': " + inputLine);
         }
-        String[] strList = inputLine.split("@");
-        if (strList.length != 2) {
-            throw new WrongEmailException("Почта должна содержать имя до '@' и вид почты после: " + inputLine);
-        }
-        return strList;
     }
 }
 
@@ -94,8 +111,8 @@ class Camoufleur {
     public Map<Choice, Processor> processors = new HashMap<>();
 
     Camoufleur() {
-        processors.put(Choice.FULLNAME, new Processor(new FullNameValidator(), new FullNameDisguiser()));
-        processors.put(Choice.EMAIL, new Processor(new EmailValidator(), new EmailDisguiser()));
+        processors.put(Choice.FULLNAME, new Processor(new FullNameValidator(), new FullNameParser(), new FullNameDisguiser()));
+        processors.put(Choice.EMAIL, new Processor(new EmailValidator(), new EmailParser(), new EmailDisguiser()));
     }
 
     public String Camoufleuring(Integer inputInt, String inputLine) throws WrongNameException {
@@ -104,16 +121,19 @@ class Camoufleur {
 
     public class Processor {
         Validator validator;
+        Parser parser;
         Disguiser disguiser;
 
-        Processor(Validator newValidator, Disguiser newDisguiser) {
+
+        Processor(Validator newValidator, Parser newParser, Disguiser newDisguiser) {
             this.validator = newValidator;
+            this.parser = newParser;
             this.disguiser = newDisguiser;
         }
 
         String process(String inputLine) throws WrongNameException {
-
-            String[] strList = validator.isValid(inputLine);
+            validator.isValid(inputLine);
+            String[] strList = parser.parse(inputLine);
             return disguiser.disguise(strList);
         }
     }

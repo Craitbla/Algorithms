@@ -54,13 +54,20 @@ class CamoufleurTest {
             @ParameterizedTest //честно, чуть-чуть оверкод, но ладно
             @MethodSource("provideValidFullNames")
             void isValid_validFullName_returnsWithoutException(String inputLine) throws WrongNameException {
-                processor.validator.isValid(inputLine); //////////////////
+                processor.validator.isValid(inputLine);
             }
 
             @ParameterizedTest
             @MethodSource("provideValidFullNames")
+            void parse_validFullName_returnsWithoutException(String inputLine) throws WrongNameException {
+                processor.validator.isValid(inputLine);
+            }
+
+            @ParameterizedTest //мок
+            @MethodSource("provideValidFullNames")
             void disguise_validFullName_returnsCorrect(String inputLine, String expected) throws WrongNameException {  ////////////////
-                String result = processor.disguiser.disguise(inputLine);
+                String[] strList = processor.parser.parse(inputLine);
+                String result = processor.disguiser.disguise(strList);
                 assertEquals(expected, result, "для ФИО '" + inputLine + "' ожидался результат '" + expected + "'");
             }
         }
