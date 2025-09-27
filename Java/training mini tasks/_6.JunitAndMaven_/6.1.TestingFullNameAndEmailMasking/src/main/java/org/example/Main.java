@@ -4,6 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+enum Choice {
+    FULLNAME(1),
+    EMAIL(2),
+    EXIT(3);
+    private final int value;
+
+    Choice(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+}
+
 class WrongNameException extends Exception {
     public WrongNameException(String message) {
         super(message);
@@ -27,6 +42,7 @@ interface Disguiser {
 }
 
 class FullNameValidator implements Validator {
+
     @Override
     public void isValid(String inputLine) throws WrongNameException {
         if (inputLine == null || inputLine.isEmpty()) {
@@ -73,11 +89,11 @@ class EmailDisguiser implements Disguiser {
 }
 
 class Camoufleur {
-    Map<Integer, Processor> processors = new HashMap<>();
+    Map<Choice, Processor> processors = new HashMap<>();
 
     Camoufleur() {
-        processors.put(1, new Processor(new FullNameValidator(), new FullNameDisguiser()));
-        processors.put(2, new Processor(new EmailValidator(), new EmailDisguiser()));
+        processors.put(Choice.FULLNAME, new Processor(new FullNameValidator(), new FullNameDisguiser()));
+        processors.put(Choice.EMAIL, new Processor(new EmailValidator(), new EmailDisguiser()));
     }
 
     public String Camoufleuring(Integer inputInt, String inputLine) throws WrongNameException {
@@ -116,11 +132,11 @@ public class Main {
             try {
                 System.out.println("Введите “1” для обработки ФИО и “2” для обработки email или “3” для выхода");
                 inputInt = Integer.parseInt(scanner.nextLine());
-                if (inputInt == 1 || inputInt == 2) {
+                if (inputInt == Choice.FULLNAME.getValue() || inputInt == Choice.EMAIL.getValue()) {
                     System.out.println("Введите данные для обработки:");
                     inputLine = scanner.nextLine();
                     System.out.println(camoufleur.Camoufleuring(inputInt, inputLine));
-                } else if (inputInt == 3) {
+                } else if (inputInt == Choice.EXIT.getValue()) {
                     flagContinue = false;
                     System.out.println("Программа завершена");
                 } else {

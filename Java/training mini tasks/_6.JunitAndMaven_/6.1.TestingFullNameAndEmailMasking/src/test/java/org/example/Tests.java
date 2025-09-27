@@ -1,10 +1,16 @@
 package org.example;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.CsvSource;
+
 //"Метод_Условие_ОжидаемыйРезультат".
 //MethodName_StateUnderTest_ExpectedBehavio
 //maskFullName_ValidInput_CorrectlyMasked
@@ -19,11 +25,43 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 //План:
-//сделать общие интерфейсы, почему интерфейсы, а не абстрактные классы?
-//не нужна конкретная реализация, по сути без разницы
+//@Nested
+//@DisplayName
+//1)Параметризация
+//2)моки
 
-//сделать отдельные классы для валидации
+@DisplayName("Тесты валидации")
+class ValidationTests {
 
+    @DisplayName("Тесты валидации FullName")
+    @Nested
+    class FullNameValidationTests {
+        private FullNameValidator validator;
+
+        @BeforeEach
+        void setUp() {
+            validator = new FullNameValidator();
+        }
+
+        @Para
+        @Test
+        void maskFullName_ValidInput_CorrectlyMasked() throws WrongNameException {
+            String inputLine = "Иванова Карина Олеговна";
+            String expected = "Карина Олеговна И.";
+            String result = camoufleur.Disguise(1, inputLine);
+            assertEquals(expected, result, "для ФИО '" + inputLine + "' ожидался результат '" + expected + "'");
+        }
+    }
+
+    @DisplayName("Тесты валидации Email")
+    @Nested
+    class EmailValidationTests {
+
+    }
+
+}
+
+//потом проверка большого класса через моки
 class PositiveMaskingTest {
     final private Camoufleur camoufleur = new Camoufleur();
 
