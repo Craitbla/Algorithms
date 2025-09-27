@@ -7,16 +7,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 //"Метод_Условие_ОжидаемыйРезультат".
 //MethodName_StateUnderTest_ExpectedBehavio
-
 //maskFullName_ValidInput_CorrectlyMasked
-//"maskFullName" - это метод, который мы тестируем.
-//"ValidInput" - условие (валидный входной данные).
-//"CorrectlyMasked" - ожидаемый результат (корректно замаскировано).
-
-//Забыла про моки
-//пока первые тесты сделаю без них, чтобы лучше понять
 
 // не Public!!!  и должен ЗАКАНЧИВАТЬСЯ на Test - *Test.java или *Tests.java
+
+//Моки
+//Надежность: Тест не сломается, если изменится логика валидации
+//Этот подход следует принципу "тестируй поведение, а не реализацию"
+// - мы проверяем, что при валидном email возвращается правильная маскировка,
+// а валидация действительно вызывается.
+
+
+//План:
+//сделать общие интерфейсы, почему интерфейсы, а не абстрактные классы?
+//не нужна конкретная реализация, по сути без разницы
+
+//сделать отдельные классы для валидации
+
 class PositiveMaskingTest {
     final private Camoufleur camoufleur = new Camoufleur();
 

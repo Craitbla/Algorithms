@@ -1,4 +1,7 @@
 package org.example;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 class WrongNameException extends Exception {
@@ -13,32 +16,31 @@ class WrongEmailException extends RuntimeException {
     }
 }
 
-class Camoufleur {
-    public String Disguise(Integer inputInt, String inputLine) throws WrongNameException {
+//не парься что это займет время, это большая тренировка и трудное задание, переделывать это нормально
 
-        if (inputInt == 1) {
-            isValidFullName(inputLine);//throws WrongNameException Проверяемое
-            return disguiseFullName(inputLine);// throws WrongNameException Проверяемоe
-        } else {
-            isValidEmail(inputLine); //throws WrongEmailException  Непроверяемое
-            return disguiseEmail(inputLine); //throws WrongEmailException Непроверяемое
-        }
+interface Validator {
+    void isValid(String inputLine) throws WrongNameException;
+}
 
+interface Disguiser {
+    String disguise(String inputLine) throws WrongNameException;
+}
 
-    }
-
-//конечно никто не мешает сделать лишнего родителя и тестировать через полиморфизм но пока без этого
-    public void isValidFullName(String inputLine) throws WrongNameException {
+class FullNameValidator implements Validator {
+    @Override
+    public void isValid(String inputLine) throws WrongNameException {
         if (inputLine == null || inputLine.isEmpty()) {
             throw new WrongNameException("Имя не может быть пустым");
         }
         if (!inputLine.matches("[a-zA-Zа-яА-ЯёЁ\\s]+")) {
             throw new WrongNameException("Имя может содержать только буквы и пробелы: " + inputLine);
         }
-
     }
+}
 
-    public void isValidEmail(String inputLine) {
+class EmailValidator implements Validator {
+    @Override
+    public void isValid(String inputLine) {
         if (inputLine == null || inputLine.isEmpty()) {
             throw new WrongEmailException("Почта не может быть пустой");
         }
@@ -46,21 +48,55 @@ class Camoufleur {
             throw new WrongEmailException("Почта должна содержать '@': " + inputLine);
         }
     }
+}
 
-    public String disguiseFullName(String inputLine) throws WrongNameException {
+class FullNameDisguiser implements Disguiser {
+    @Override
+    public String disguise(String inputLine) throws WrongNameException {
         String[] strList = inputLine.split("\\s+");
         if (strList.length != 3) {
             throw new WrongNameException("Ожидается 3 слова: " + inputLine);
         }
         return String.format("%s %s %c.", strList[1], strList[2], strList[0].charAt(0));
     }
+}
 
-    public String disguiseEmail(String inputLine) {
+class EmailDisguiser implements Disguiser {
+    @Override
+    public String disguise(String inputLine) {
         String[] strList = inputLine.split("@");
         if (strList.length != 2) {
             throw new WrongEmailException("Почта должна содержать имя до '@' и вид почты после: " + inputLine);
         }
         return String.format("%c***@%s", strList[0].charAt(0), strList[1]);
+    }
+}
+
+class Camoufleur {
+    Map<Integer, Processor> processors = new HashMap<>();
+
+    Camoufleur() {
+        processors.put(1, new Processor(new FullNameValidator(), new FullNameDisguiser()));
+        processors.put(2, new Processor(new EmailValidator(), new EmailDisguiser()));
+    }
+
+    public String Camoufleuring(Integer inputInt, String inputLine) throws WrongNameException {
+        return processors.get(inputInt).process(inputLine);
+    }
+
+    public class Processor {
+        Validator validator;
+        Disguiser disguiser;
+
+        Processor(Validator newValidator, Disguiser newDisguiser) {
+            this.validator = newValidator;
+            this.disguiser = newDisguiser;
+        }
+
+        String process(String inputLine) throws WrongNameException {
+            validator.isValid(inputLine);
+            return disguiser.disguise(inputLine);
+        }
     }
 
 }
@@ -83,7 +119,7 @@ public class Main {
                 if (inputInt == 1 || inputInt == 2) {
                     System.out.println("Введите данные для обработки:");
                     inputLine = scanner.nextLine();
-                    System.out.println(camoufleur.Disguise(inputInt, inputLine));
+                    System.out.println(camoufleur.Camoufleuring(inputInt, inputLine));
                 } else if (inputInt == 3) {
                     flagContinue = false;
                     System.out.println("Программа завершена");
