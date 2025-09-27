@@ -54,7 +54,7 @@ class CamoufleurTest {
             @ParameterizedTest //честно, чуть-чуть оверкод, но ладно
             @MethodSource("provideValidFullNames")
             void isValid_validFullName_returnsWithoutException(String inputLine) throws WrongNameException {
-                processor.validator.isValid(inputLine); ////////////////
+                processor.validator.isValid(inputLine); //////////////////
             }
 
             @ParameterizedTest
