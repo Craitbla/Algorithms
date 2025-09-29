@@ -5,20 +5,26 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
-
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import java.util.stream.Stream;
+
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
+//import org.mockito.junit.jupiter.MockitoExtension;
+//
+//import static org.junit.jupiter.api.Assertions.*;
+//import static org.mockito.ArgumentMatchers.anyString;
+//import static org.mockito.Mockito.*;
 
 //"Метод_Условие_ОжидаемыйРезультат".
 //MethodName_StateUnderTest_ExpectedBehavior
@@ -39,41 +45,211 @@ import static org.mockito.Mockito.*;
 //1)Параметризация
 //2)моки
 
-
+//@Nested не статик, но
+//public static Stream<Arguments> provideValidFullName()
+//@MethodSource("org.example.Tests$ComponentsTests#provideValidFullName") !!!
+@ExtendWith(MockitoExtension.class)
 class Tests {
+    public static Stream<Arguments> provideValidFullName() {
+        return Stream.of(
+                Arguments.of("Иванова Карина Олеговна", new String[]{"Иванова", "Карина", "Олеговна"}, "Карина Олеговна И."));
+    }
+
+    public static Stream<Arguments> provideValidEmail() {
+        return Stream.of(Arguments.of("ki225431@gmail.com", new String[]{"ki225431", "gmail.com"}, "k***@gmail.com")
+        );
+    }
+
     @Nested
     @DisplayName("Тестирование компонентов")
     class ComponentsTests {
+
+
+        public static Stream<Arguments> provideInvalidFullNameForValidatorAndDisguiser() {
+            return Stream.of(
+                    Arguments.of("", "Имя не может быть пустым"),
+                    Arguments.of("Ивано124 Карина Олеговна", "Имя может содержать только буквы и пробелы")
+            );
+        }
+
+        public static Stream<Arguments> provideInvalidEmailForValidatorAndDisguiser() {
+            return Stream.of(
+                    Arguments.of("", "Почта не может быть пустой"),
+                    Arguments.of("ki225431gmail.com", "Почта должна содержать '@'")
+            );
+        }
+
+        public static Stream<Arguments> provideInvalidFullNameForParser() {
+            return Stream.of(
+                    Arguments.of("Иванова Карина", "Ожидается 3 слова"),
+                    Arguments.of("Иванова Карина Ольга Олеговна ", "Ожидается 3 слова")
+            );
+        }
+
+        public static Stream<Arguments> provideInvalidEmailForParser() {
+            return Stream.of(
+                    Arguments.of("ki225431gmail.com", "Почта должна содержать имя до '@' и вид почты после"),
+                    Arguments.of("ki2@25431@gmail.com", "Почта должна содержать имя до '@' и вид почты после")
+            );
+        }
+
+
         @Nested
         class ValidatorsTests {
+            FullNameValidator fullNameValidator = new FullNameValidator();
 
+            @ParameterizedTest
+            @MethodSource("org.example.Tests$ComponentsTests#provideValidFullName")
+            void isValid_validFullName_returnsWithoutException(String inputLine, String[] parsed, String expected) throws WrongNameException {
+                fullNameValidator.isValid(inputLine);
+            }
+
+            @ParameterizedTest
+            @MethodSource("org.example.Tests$ComponentsTests#provideInvalidFullNameForValidatorAndDisguiser")
+            void isValid_InvalidFullName_throwsException(String inputLine, String expected) {
+                WrongNameException exception = assertThrows(
+                        WrongNameException.class,
+                        () -> fullNameValidator.isValid(inputLine)
+                );
+                Assertions.assertTrue(exception.getMessage().contains(expected));
+            }
+
+            EmailValidator emailValidator = new EmailValidator();
+
+            @ParameterizedTest
+            @MethodSource("org.example.Tests#provideValidEmail")
+            void isValid_validEmail_returnsWithoutException(String inputLine) {
+                emailValidator.isValid(inputLine);
+            }
+
+            @ParameterizedTest
+            @MethodSource("org.example.Tests$ComponentsTests#provideInvalidEmailForValidatorAndDisguiser")
+            void isValid_InvalidEmail_throwsException(String inputLine, String expected) {
+                WrongEmailException exception = assertThrows(
+                        WrongEmailException.class,
+                        () -> emailValidator.isValid(inputLine)
+                );
+                Assertions.assertTrue(exception.getMessage().contains(expected));
+            }
         }
+
         @Nested
         class ParsersTests {
+            FullNameParser fullNameParser = new FullNameParser();
 
+            @ParameterizedTest //если не будет исключение, то код не пройдет
+            @MethodSource("org.example.Tests#provideValidFullName")
+            void parse_validFullName_returnsWithoutException(String inputLine, String[] parsed) throws WrongNameException {
+                String[] result = fullNameParser.parse(inputLine);
+                assertArrayEquals(parsed, result);
+            }
+
+            @ParameterizedTest //если не будет исключение, то код не пройдет
+            @MethodSource("org.example.Tests$ComponentsTests#provideInvalidFullNameForParser")
+            void parse_invalidFullName_throwsException(String inputLine, String expected) throws WrongNameException {
+                WrongNameException exception = assertThrows(
+                        WrongNameException.class,
+                        () -> fullNameParser.parse(inputLine)
+                );
+                Assertions.assertTrue(exception.getMessage().contains(expected));
+            }
+
+            EmailParser emailParser = new EmailParser();
+
+            @ParameterizedTest //если не будет исключение, то код не пройдет
+            @MethodSource("org.example.Tests#provideValidEmail")
+            void parse_validEmail_returnsWithoutException(String inputLine, String[] parsed) throws WrongNameException {
+                String[] result = emailParser.parse(inputLine);
+                assertArrayEquals(parsed, result);
+            }
+
+            @ParameterizedTest //если не будет исключение, то код не пройдет
+            @MethodSource("org.example.Tests$ComponentsTests#provideInvalidEmailForParser")
+            void parse_invalidEmail_throwsException(String inputLine, String expected) throws WrongNameException {
+                WrongEmailException exception = assertThrows(
+                        WrongEmailException.class,
+                        () -> emailParser.parse(inputLine)
+                );
+                Assertions.assertTrue(exception.getMessage().contains(expected));
+            }
         }
 
         @Nested
-        class DisguisersTests {
+        class DisguisersTests { //только хорошие случаи потому что исключений он ен выдает
+            FullNameDisguiser fullNameDisguiser = new FullNameDisguiser(); //чтоб наверняка
 
+            @ParameterizedTest
+            @MethodSource("org.example.Tests#provideValidFullName")
+            void disguise_validFullName_returnsWithoutException(String inputLine, String[] parsed, String expected) {
+                String result = fullNameDisguiser.disguise(parsed);
+                Assertions.assertEquals(result, expected);
+            }
+
+
+            EmailDisguiser emailDisguiser = new EmailDisguiser();
+
+            @ParameterizedTest
+            @MethodSource("org.example.Tests#provideValidEmail")
+            void disguise_validEmail_returnsWithoutException(String inputLine, String[] parsed, String expected) {
+                String result = emailDisguiser.disguise(parsed);
+                Assertions.assertEquals(result, expected);
+            }
         }
     }
 
     @Nested
     @DisplayName("Unit тесты больших классов с моками")
     class UnitTests {
+        @Mock
+        private Validator validator;
+        @Mock
+        private Parser parser;
+        @Mock
+        private Disguiser disguiser;
+
+        private Camoufleur.Processor processor;
+
+        @BeforeEach
+        void setUp() {
+            processor = new Camoufleur().new Processor(validator, parser, disguiser);
+        }
+
+        @Nested
         class ProcessorsTests {
+            @ParameterizedTest
+            @MethodSource("org.example.Tests#provideValidFullName")
+            void process_ValidFullName_CallsAllComponentsInOrder(
+                    String input, String[] parsed, String expected) throws WrongNameException {
+                doNothing().when(validator).isValid(input);
+                when(parser.parse(input)).thenReturn(parsed);
+                when(disguiser.disguise(parsed)).thenReturn(expected);
+
+                String result = processor.process(input);
+
+                Assertions.assertEquals(result, expected);
+
+            }
 
         }
+
+        @Nested
         class CamoufleurTests {
+            @ParameterizedTest
+            @CsvSource({
+                    "1, 'Иванов Иван Иванович', FULLNAME",
+                    "2, 'test@mail.com', EMAIL"
+            })
+            void camoufleuring_DifferentChoices_RoutesToCorrectProcessor(
+                    int choice, String input, Choice expectedProcessorType) {
 
+            }
         }
     }
-
-    @Nested
-    @DisplayName("Интеграционные тесты. Тесты полных сценариев без моков. ")
-    class IntegrationTests {
-    }
+//
+//    @Nested
+//    @DisplayName("Интеграционные тесты. Тесты полных сценариев без моков. ")
+//    class IntegrationTests {
+//    }
 
 
 }
@@ -93,7 +269,7 @@ class Tests {
 ////            а @MethodSource просто дает ссылку одной строчкой
 ////                    "'Иванова Карина Олеговна', 'Карина Олеговна И.'"
 ////            })
-//
+//s
 //            private static Stream<Arguments> provideValidFullNamesForParser() {
 //                return Stream.of(
 //                        Arguments.of("Иванова Карина Олеговна", new String[]{"Иванова", "Карина", "Олеговна"}, "Карина Олеговна И.")
@@ -129,14 +305,13 @@ class Tests {
 //                        Arguments.of(
 //                                "", "Имя не может быть пустым"),
 //                        Arguments.of(
-//                                "Ивано124 Карина Олеговна", "Имя может содержать только буквы и пробелы: {0}")
+//                                "Ивано124 Карина Олеговна", "Имя может содержать только буквы и пробелы")
 //                );
 //            }
 //
 //            @ParameterizedTest
 //            @MethodSource("provideInvalidFullNamesForValidator")
 //            void isValid_InvalidFullNames_throwsException(String inputLine, String expected) {
-//                expected = expected.replace("{0}", inputLine);
 //                WrongNameException exception = assertThrows(
 //                        WrongNameException.class,
 //                        () -> processor.validator.isValid(inputLine)
@@ -146,14 +321,13 @@ class Tests {
 //
 //            private static Stream<Arguments> provideInvalidFullNamesForParser() {
 //                return Stream.of(
-//                        Arguments.of("Иванова Карина", "Ожидается 3 слова: {0}")
+//                        Arguments.of("Иванова Карина", "Ожидается 3 слова")
 //                );
 //            }
 //
 //            @ParameterizedTest
 //            @MethodSource("provideInvalidFullNamesForParser")
 //            void parser_emptyFullName_throwsException(String inputLine, String expected) {
-//                expected = expected.replace("{0}", inputLine);
 //                WrongNameException exception = assertThrows(
 //                        WrongNameException.class,
 //                        () -> processor.parser.parse(inputLine)
@@ -164,12 +338,12 @@ class Tests {
 //    }
 
 
-    ///
-    ///
-    ///
-    ///
-    ///
-    ///
+///
+///
+///
+///
+///
+///
 //    @Nested
 //    @DisplayName("Маскировка Email")
 //    class EmailDisguise {
@@ -189,7 +363,7 @@ class Tests {
 //            @Test void disguise_validFullName_returnsCorrect(){}
 //        }
 //    }
-}
+//}
 //@DisplayName("Тесты валидации")
 //class ValidationTests {
 //

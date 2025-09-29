@@ -10,9 +10,11 @@
     <url>https://github.com/Craitbla/Algorithms/tree/main/Java/training%20mini%20tasks/_6.JunitAndMaven_</url>
 
     <properties>
+
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javafx.platform>win</javafx.platform> <!-- Или `linux`, `mac` -->
     </properties>
 
     <build>
@@ -21,6 +23,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.4</version>
+                <!--                возможно лишнее-->
+                <!--                <configuration>-->
+                <!--                    <argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>-->
+                <!--                </configuration>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -86,16 +92,23 @@
 
             <artifactId>mockito-core</artifactId>
 
-            <version>5.16.0</version>
+            <version>5.11.0</version>
 
             <scope>test</scope>
 
         </dependency>
 
         <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>5.11.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>26-ea+7</version> <!-- или более новая стабильная версия -->
+            <version>21.0.4</version> <!-- или более новая стабильная версия -->
         </dependency>
 
 

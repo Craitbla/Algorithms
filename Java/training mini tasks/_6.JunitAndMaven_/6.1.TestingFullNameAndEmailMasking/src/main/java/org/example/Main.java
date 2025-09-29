@@ -51,7 +51,7 @@ class FullNameParser implements Parser {
     public String[] parse(String inputLine) throws WrongNameException {
         String[] strList = inputLine.split("\\s+");
         if (strList.length != 3) {
-            throw new WrongNameException("Ожидается 3 слова: " + inputLine);
+            throw new WrongNameException("Ожидается 3 слова");
         }
         return strList;
     }
@@ -62,7 +62,7 @@ class EmailParser implements Parser {
     public String[] parse(String inputLine) {
         String[] strList = inputLine.split("@");
         if (strList.length != 2) {
-            throw new WrongEmailException("Почта должна содержать имя до '@' и вид почты после: " + inputLine);
+            throw new WrongEmailException("Почта должна содержать имя до '@' и вид почты после");
         }
         return strList;
     }
@@ -76,7 +76,7 @@ class FullNameValidator implements Validator {
             throw new WrongNameException("Имя не может быть пустым");
         }
         if (!inputLine.matches("[a-zA-Zа-яА-ЯёЁ\\s]+")) {
-            throw new WrongNameException("Имя может содержать только буквы и пробелы: " + inputLine);
+            throw new WrongNameException("Имя может содержать только буквы и пробелы");
         }
     }
 }
@@ -88,7 +88,7 @@ class EmailValidator implements Validator {
             throw new WrongEmailException("Почта не может быть пустой");
         }
         if (!inputLine.contains("@")) {
-            throw new WrongEmailException("Почта должна содержать '@': " + inputLine);
+            throw new WrongEmailException("Почта должна содержать '@'");
         }
     }
 }
