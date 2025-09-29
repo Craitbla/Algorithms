@@ -23,10 +23,16 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.4</version>
-                <!--                возможно лишнее-->
-                <!--                <configuration>-->
-                <!--                    <argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>-->
-                <!--                </configuration>-->
+                <configuration>
+                    <argLine>
+                        <!--эта часть вроде как не красивая, но работает, просто в теории замедляет сборку-->
+                        -XX:+EnableDynamicAgentLoading
+                        --add-opens java.base/java.lang=ALL-UNNAMED
+                        --add-opens java.base/java.util=ALL-UNNAMED
+                        -Djdk.net.URLClassPath.disableClassPathURLCheck=true
+                        -Xshare:off
+                    </argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -72,6 +78,7 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>5.11.0</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>

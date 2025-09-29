@@ -99,7 +99,7 @@ class Tests {
             FullNameValidator fullNameValidator = new FullNameValidator();
 
             @ParameterizedTest
-            @MethodSource("org.example.Tests$ComponentsTests#provideValidFullName")
+            @MethodSource("org.example.Tests#provideValidFullName")
             void isValid_validFullName_returnsWithoutException(String inputLine, String[] parsed, String expected) throws WrongNameException {
                 fullNameValidator.isValid(inputLine);
             }
@@ -231,19 +231,19 @@ class Tests {
             }
 
         }
-
-        @Nested
-        class CamoufleurTests {
-            @ParameterizedTest
-            @CsvSource({
-                    "1, 'Иванов Иван Иванович', FULLNAME",
-                    "2, 'test@mail.com', EMAIL"
-            })
-            void camoufleuring_DifferentChoices_RoutesToCorrectProcessor(
-                    int choice, String input, Choice expectedProcessorType) {
-
-            }
-        }
+//
+//        @Nested
+//        class CamoufleurTests {
+//            @ParameterizedTest
+//            @CsvSource({
+//                    "1, 'Иванов Иван Иванович', FULLNAME",
+//                    "2, 'test@mail.com', EMAIL"
+//            })
+//            void camoufleuring_DifferentChoices_RoutesToCorrectProcessor(
+//                    int choice, String input, Choice expectedProcessorType) {
+//
+//            }
+//        }
     }
 //
 //    @Nested
