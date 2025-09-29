@@ -126,8 +126,8 @@ class Camoufleur {
 
 
         Processor(Validator newValidator, Parser newParser, Disguiser newDisguiser) {
-            this.validator = newValidator;
-            this.parser = newParser;
+            this.validator = newValidator; //выдает исключения
+            this.parser = newParser; //выдает исключения тоже, но свои
             this.disguiser = newDisguiser;
         }
 
