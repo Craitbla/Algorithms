@@ -115,7 +115,7 @@ class Camoufleur {
         processors.put(Choice.EMAIL, new Processor(new EmailValidator(), new EmailParser(), new EmailDisguiser()));
     }
 
-    public String Camoufleuring(Integer inputInt, String inputLine) throws WrongNameException {
+    public String camoufleure(Integer inputInt, String inputLine) throws WrongNameException {
         return processors.get(inputInt).process(inputLine);
     }
 
@@ -158,7 +158,7 @@ public class Main {
                 if (inputInt == Choice.FULLNAME.getValue() || inputInt == Choice.EMAIL.getValue()) {
                     System.out.println("Введите данные для обработки:");
                     inputLine = scanner.nextLine();
-                    System.out.println(camoufleur.Camoufleuring(inputInt, inputLine));
+                    System.out.println(camoufleur.camoufleure(inputInt, inputLine));
                 } else if (inputInt == Choice.EXIT.getValue()) {
                     flagContinue = false;
                     System.out.println("Программа завершена");
