@@ -115,8 +115,16 @@ class Camoufleur {
         processors.put(Choice.EMAIL, new Processor(new EmailValidator(), new EmailParser(), new EmailDisguiser()));
     }
 
-    public String camoufleure(Integer inputInt, String inputLine) throws WrongNameException {
-        return processors.get(inputInt).process(inputLine);
+    Camoufleur(boolean forTesting) {
+        processors = new HashMap<>();
+    }
+
+    Camoufleur(Map<Choice, Processor> newProcessors) {
+        processors = newProcessors;
+    }
+
+    public String camoufleure(Choice choice, String inputLine) throws WrongNameException {
+        return processors.get(choice).process(inputLine);
     }
 
     public class Processor {
@@ -155,11 +163,15 @@ public class Main {
             try {
                 System.out.println("Введите “1” для обработки ФИО и “2” для обработки email или “3” для выхода");
                 inputInt = Integer.parseInt(scanner.nextLine());
-                if (inputInt == Choice.FULLNAME.getValue() || inputInt == Choice.EMAIL.getValue()) {
+                if (inputInt == 1 || inputInt == 2) {
                     System.out.println("Введите данные для обработки:");
                     inputLine = scanner.nextLine();
-                    System.out.println(camoufleur.camoufleure(inputInt, inputLine));
-                } else if (inputInt == Choice.EXIT.getValue()) {
+                    if (inputInt == 1) {
+                        System.out.println(camoufleur.camoufleure(Choice.FULLNAME, inputLine));
+                    } else if (inputInt == 2) {
+                        System.out.println(camoufleur.camoufleure(Choice.EMAIL, inputLine));
+                    }
+                } else if (inputInt == 3) {
                     flagContinue = false;
                     System.out.println("Программа завершена");
                 } else {

@@ -2,6 +2,9 @@ package org.example;
 
 import org.junit.jupiter.api.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -16,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Map;
 import java.util.stream.Stream;
 
 //import org.mockito.InjectMocks;
@@ -289,37 +293,57 @@ class Tests {
 //
 //
 //        } //6
-
+        @ExtendWith(MockitoExtension.class)
         @Nested
         class CamoufleurTests {
-            //            processor ошибку, и camoufleur тоже и нормальное
-            @Mock
-            private Camoufleur.Processor mockedProcessor;
-            //            @InjectMocks // возможно в этом ошибка
-            private Camoufleur camoufleur = new Camoufleur(); //нужные  processorы есть
 
-            @Nested
-            class FullNameCamoufleurTests {
-                @BeforeEach
-                void setUp() {
-                    reset(mockedProcessor);
-                    camoufleur.processors.put(Choice.FULLNAME, mockedProcessor);
-                }
+            //проблема была в том что функция принимающая енам
+            // не могла переварить интеджер и ломала работу метода
 
-                @ParameterizedTest
-                @MethodSource("org.example.Tests#provideValidFullName")
-                void camoufleure_FullNameChoice_CallsFullNameProcessor(String input, String[] ignored, String expected) throws WrongNameException {
-                    // Arrange
-                    camoufleur.processors.put(Choice.FULLNAME, mockedProcessor);
-                    when(mockedProcessor.process(input)).thenReturn(expected);
-                    //любишь делать моки, лючи и поведение их прописывать, а иначе она null возвращают
-                    // Act
-                    String result = camoufleur.camoufleure(Choice.FULLNAME.getValue(), input);
+            // Убираем @InjectMocks и инициализируем карту вручную
+//            private Map<Choice, Camoufleur.Processor> mockedProcessors;
+            private Camoufleur camoufleur = new Camoufleur(true);
 
-                    // Assert
-                    Assertions.assertEquals(result, expected);
-                    verify(mockedProcessor.process(any()));
-                }
+            @ParameterizedTest
+            @MethodSource("org.example.Tests#provideValidFullName")
+            void camoufleure_FullNameChoice_CallsFullNameProcessor(String input, String[] ignored, String expected) throws WrongNameException {
+                // Arrange
+                Camoufleur.Processor mockedProcessor = mock(Camoufleur.Processor.class);
+                camoufleur.processors.put(Choice.FULLNAME, mockedProcessor);
+
+                when(mockedProcessor.process(input)).thenReturn(expected);
+
+//                 Act
+                String result = camoufleur.camoufleure(Choice.FULLNAME, input);
+
+                // Assert
+                Assertions.assertEquals(expected, result);
+                verify(mockedProcessor).process(input);
+
+            }
+
+//
+//                @BeforeEach
+//                void setUp() {
+//                    reset(processor);
+//                    mockedProcessors.put(Choice.FULLNAME, processor);
+//
+//                    camoufleur = new Camoufleur(mockedProcessors);
+//                }
+//
+//                @ParameterizedTest
+//                @MethodSource("org.example.Tests#provideValidFullName")
+//                void camoufleure_FullNameChoice_CallsFullNameProcessor(String input, String[] ignored, String expected) throws WrongNameException {
+//                    // Arrange
+//                    when(processor.process(input)).thenReturn(expected);
+//                    //любишь делать моки, лючи и поведение их прописывать, а иначе они null возвращают
+//                    // Act
+//                    String result = camoufleur.camoufleure(Choice.FULLNAME.getValue(), input);
+//
+//                    // Assert
+//                    Assertions.assertEquals(result, expected);
+//                    verify(processor).process(input);
+//                }
 
 //                @ParameterizedTest
 //                @MethodSource("org.example.Tests#provideValidEmail")
@@ -333,7 +357,7 @@ class Tests {
 //                    // Assert
 //                }
 
-            }
+        }
 
 
 //        public String Camoufleuring(Integer inputInt, String inputLine) throws WrongNameException {
@@ -341,16 +365,14 @@ class Tests {
 //        }
 
 
-        }
     }
+}
 //
 //    @Nested
 //    @DisplayName("Интеграционные тесты. Тесты полных сценариев без моков. ")
 //    class IntegrationTests {
 //    }
 
-
-}
 
 //
 //    private final Camoufleur camoufleur = new Camoufleur();
