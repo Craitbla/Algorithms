@@ -1,6 +1,3 @@
-
-//Проброс исключения
-//Только ньюанс того что у меня и в isValid... исключения и в disguise...
 import java.util.Scanner;
 
 class WrongNameException extends Exception {

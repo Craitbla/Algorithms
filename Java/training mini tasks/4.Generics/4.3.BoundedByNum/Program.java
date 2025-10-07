@@ -1,8 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-// Оба создадут полностью изменяемый ArrayList
-// ArrayList<Float> floats1 = new ArrayList<>(Arrays.asList(2F, 432.435F));
-// ArrayList<Float> floats2 = new ArrayList<>(List.of(2F, 432.435F));
 
 public class Program {
     public static void main(String[] args) {

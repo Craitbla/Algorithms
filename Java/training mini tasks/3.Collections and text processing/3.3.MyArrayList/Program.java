@@ -3,27 +3,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-//@SuppressWarnings("unchecked")
-//Используется массив Object[] вместо E[] из-за ограничений Java с созданием generic-массивов
-//hasNext() на самом деле существует ли тот на котором итератор
 public class Program {
     public static void main(String[] args) {
-        // 1 вариант
-        // MyArrayList<Integer> myArrayList = new MyArrayList<>();
-        // System.out.println(myArrayList.capacity);
-        // for (int i = 0; i < 20; i++) {
-        // myArrayList.add(i + 1);
-        // }
-        // System.out.println(myArrayList.capacity);
-        // myArrayList = new MyArrayList<>(5);
-        // System.out.println(myArrayList.capacity);
-        // for (int i = 0; i < 50; i++) {
-        // myArrayList.add(i + 1);
-        // }
-        // System.out.println(myArrayList.capacity);
-        // System.out.println(myArrayList.add(1)); // 50
-
-        // 2 вариант
         MyArrayList<String> myArrayList = new MyArrayList<>(0);
         System.out.println(myArrayList.add("one")); // 0
         System.out.println(myArrayList.add("two")); // 1
@@ -45,7 +26,7 @@ public class Program {
 class MyArrayList<E> implements Iterable<E> {
     private Object[] array;
     private int size;
-    private int capacity; // можно сделать public
+    private int capacity;
 
     public MyArrayList() {
         this(10);
@@ -64,7 +45,7 @@ class MyArrayList<E> implements Iterable<E> {
 
     public int add(E element) {
         if (size == capacity) {
-            capacity = (capacity * 3) / 2 + 1; // +1 важно
+            capacity = (capacity * 3) / 2 + 1;
             array = Arrays.copyOf(array, capacity);
         }
         array[size] = element;
@@ -88,7 +69,7 @@ class MyArrayList<E> implements Iterable<E> {
 
     public boolean contains(E element) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(array[i], element)) { // более безопасно
+            if (Objects.equals(array[i], element)) {
                 return true;
             }
         }
@@ -108,7 +89,7 @@ class MyArrayList<E> implements Iterable<E> {
         }
 
         @Override
-        @SuppressWarnings("unchecked") // класс, супер, прикол
+        @SuppressWarnings("unchecked")
         public E next() { // E
             if (hasNext()) {
                 return (E) array[curIndex++];

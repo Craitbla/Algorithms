@@ -6,32 +6,19 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-//filter(w -> w > 0) это просто непривычный синтаксис, не более того
 
-//arr.stream().forEach(t -> delSpaces.processText(t));
-//Или, что то же самое
-//arr.stream().forEach(delSpaces::processText);
-
-//Если бы несколько интерфейсов могли переопределять toString() через default-методы, возник бы конфликт - непонятно, какую реализацию использовать
-
-//какие-либо проверки для каждого элкмента то stream API
 public class Main {
     public static void main(String[] args) {
-        //1.1
         TextProcessor delSpaces = t-> t.replace(" ", "");
         System.out.println(delSpaces.processText(" Hello worl d!  "));
         System.out.println(delSpaces.reverse(" Hello worl d!  "));
         System.out.println(TextProcessor.createDefault().processText(" Hello worl d!  "));
-        //1.2
+
         TextValidator numVal = t-> t.chars().anyMatch(Character::isDigit);
         System.out.println(numVal.isValid("sdfasd")); //false
         System.out.println(numVal.isValid("sdfas1"));//true
         System.out.println(TextValidator.lengthValidator(3).isValid("s1"));//false
         System.out.println(TextValidator.lengthValidator(3).isValid("sdfas1")); //true
-
-
-        //2
-        //Если метод delSpaces.processText(t) возвращает void, его нельзя использовать внутри map().
 
         ArrayList<String> arr = new ArrayList<>(Arrays.asList("Java8", "123", "hello world", "functional")) ;
 
@@ -74,7 +61,7 @@ interface TextValidator {
 
     }
     static TextValidator lengthValidator(int minLength) {
-        return t->(t.length() >= minLength ? true : false); //можно без тернарника
+        return t->(t.length() >= minLength ? true : false);
     }
     default String description(){
         return "Validator";

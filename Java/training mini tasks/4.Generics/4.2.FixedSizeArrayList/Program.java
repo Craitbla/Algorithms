@@ -1,6 +1,3 @@
-//<><><><><><><><><><><><><><><><><><>
-
-// import java.util.Inde
 public class Program {
     public static void main(String[] args) {
         FixedSizeArrayList<Integer> myArray = new FixedSizeArrayList<Integer>(3);
@@ -24,7 +21,7 @@ class FixedSizeArrayList<E> {
         if (index >= capacity || index < 0) {
             throw new IndexOutOfBoundsException(
                     "нельзя использовать индекс " + index + ", максимальный индекс " + (capacity - 1));
-        } // забыла что каждое исключение это класс и нужно создавать объект
+        }
         array[index] = element;
     }
 

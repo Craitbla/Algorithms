@@ -1,9 +1,6 @@
 import java.util.Scanner;
 import java.lang.Double;
 
-//long целое, размером с double
-//передаются только неизменяемые значения-ссылки, поэтому нужно делать return нужного
-
 public class DoubleAndFloat {
     private static final double EPS = 1e-7;
 

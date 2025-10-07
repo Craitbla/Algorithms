@@ -1,14 +1,8 @@
 package org.example;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
-//"Метод_Условие_ОжидаемыйРезультат".
-//MethodName_StateUnderTest_ExpectedBehavior
 class Tests{
     Summator summator = new Summator();
     @Test

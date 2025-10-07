@@ -2,19 +2,7 @@ import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
 
-//Мы можем наследовать только от одного класса, в отличие, например, от языка С++, где имеется множественное наследование.
-
-//Enum class — это настоящий класс со всеми вытекающими из этого возможностями, но от него невозможно наследоваться.
-
-//программируй на уровне интерфейсов, а не реализаций
-
-//weapons и curWeapon - это "венгерская нотация", которая не принята в Java
-
-//Полиморфизм:
-//В Java все методы виртуальные по умолчанию (как virtual в C++)
-//Для запрета переопределения используется final
-
-public class Classes { // loader
+public class Classes {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Player p1 = new Player();

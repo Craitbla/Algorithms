@@ -17,9 +17,6 @@ public class Program {
     }
 }
 
-// long целый
-// (double) работает только с примитивами
-// даже если .doubleValue() сработает на Double, ничего не будет
 
 class NumPair<K extends Number, V extends Number> {
     private K key;

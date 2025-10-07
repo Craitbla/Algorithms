@@ -16,11 +16,11 @@ class Camoufleur {
     public String Disguise(Integer inputInt, String inputLine) throws WrongNameException {
 
         if (inputInt == 1) {
-            isValidFullName(inputLine);//throws WrongNameException Проверяемое
-            return disguiseFullName(inputLine);// throws WrongNameException Проверяемоe
+            isValidFullName(inputLine);
+            return disguiseFullName(inputLine);
         } else {
-            isValidEmail(inputLine); //throws WrongEmailException  Непроверяемое
-            return disguiseEmail(inputLine); //throws WrongEmailException Непроверяемое
+            isValidEmail(inputLine);
+            return disguiseEmail(inputLine);
         }
 
 
@@ -93,8 +93,6 @@ public class Main {
             } catch (NumberFormatException e) {
                 System.out.println("Ошибка: Только цифры");
             } catch (WrongNameException e) {
-                //насколько я понимаю эта часть не имеет смысла,
-                // так как никакой новой информации здесь нет
                 System.out.println(e.getMessage());
             } catch (Exception e) {
                 System.out.println(e.getMessage());

@@ -6,8 +6,7 @@ import java.util.Scanner;
 
 enum Choice {
     FULLNAME(1),
-    EMAIL(2),
-    EXIT(3);
+    EMAIL(2);
     private final int value;
 
     Choice(int value) {
@@ -61,8 +60,8 @@ class EmailParser implements Parser {
     @Override
     public String[] parse(String inputLine) {
         String[] strList = inputLine.split("@");
-        if (strList.length != 2) {
-            throw new WrongEmailException("Почта должна содержать имя до '@' и вид почты после");
+        if (strList.length > 2) {
+            throw new WrongEmailException("Почта должна содержать только один символ '@'");
         }
         return strList;
     }
@@ -115,7 +114,7 @@ class Camoufleur {
         processors.put(Choice.EMAIL, new Processor(new EmailValidator(), new EmailParser(), new EmailDisguiser()));
     }
 
-    Camoufleur(boolean forTesting) {
+    Camoufleur(boolean forTesting) { //тобы можно было вложить мок процессора
         processors = new HashMap<>();
     }
 
