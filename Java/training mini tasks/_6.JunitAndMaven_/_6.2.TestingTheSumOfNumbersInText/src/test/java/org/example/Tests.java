@@ -10,8 +10,7 @@ class Tests{
         String input ="50,5 kilometers and 30.7 meters covered in 2 hours";
         String output = summator.SummDigitInString(input);
         String expected = "50,5 + 30,7 + 2 = 83,2";
-//    assertEquals(expected, output, "для текста '" + input + "' ожидался результат '" + expected + "' но пулучилось '" + output + "'");
-        //вобщем не поняла для чего там пояснение потому что и так все есть
+
         assertEquals(expected, output);
     }
 

@@ -25,7 +25,7 @@
                 <version>3.5.4</version>
                 <configuration>
                     <argLine>
-                        <!--эта часть вроде как не красивая, но работает, просто в теории замедляет сборку-->
+                        <!--                        -->
                         -XX:+EnableDynamicAgentLoading
                         --add-opens java.base/java.lang=ALL-UNNAMED
                         --add-opens java.base/java.util=ALL-UNNAMED
@@ -53,7 +53,7 @@
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.4.2</version>
             </plugin>
-            <plugin> <!-- для того чтобы показывало на какой строчке ошибка-->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>3.6.0</version>
@@ -142,7 +142,7 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>21.0.4</version> <!-- или более новая стабильная версия -->
+            <version>21.0.4</version>
         </dependency>
 
 

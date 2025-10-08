@@ -30,9 +30,7 @@ class WrongEmailException extends RuntimeException {
     }
 }
 
-//не парься что это займет время, это большая тренировка и трудное задание, переделывать это нормально
-//главный вопрос жизни, почему это классы, а не просто функциональные интерфейсы
-interface Validator { // все поля в интерфейсе final //Parser parser = null;
+interface Validator {
 
     void isValid(String inputLine) throws WrongNameException;
 }
@@ -114,12 +112,8 @@ class Camoufleur {
         processors.put(Choice.EMAIL, new Processor(new EmailValidator(), new EmailParser(), new EmailDisguiser()));
     }
 
-    Camoufleur(boolean forTesting) { //тобы можно было вложить мок процессора
+    Camoufleur(boolean forTesting) {
         processors = new HashMap<>();
-    }
-
-    Camoufleur(Map<Choice, Processor> newProcessors) {
-        processors = newProcessors;
     }
 
     public String camoufleure(Choice choice, String inputLine) throws WrongNameException {
@@ -133,8 +127,8 @@ class Camoufleur {
 
 
         Processor(Validator newValidator, Parser newParser, Disguiser newDisguiser) {
-            this.validator = newValidator; //выдает исключения
-            this.parser = newParser; //выдает исключения тоже, но свои
+            this.validator = newValidator;
+            this.parser = newParser;
             this.disguiser = newDisguiser;
         }
 
@@ -147,49 +141,49 @@ class Camoufleur {
 
 }
 
-public class Main {
-
-    public static void main(String[] args) {
-
-
-        Scanner scanner = new Scanner(System.in);
-        Camoufleur camoufleur = new Camoufleur();
-        boolean flagContinue = true;
-        int inputInt;
-        String inputLine;
-
-        while (flagContinue) {
-            try {
-                System.out.println("Введите “1” для обработки ФИО и “2” для обработки email или “3” для выхода");
-                inputInt = Integer.parseInt(scanner.nextLine());
-                if (inputInt == 1 || inputInt == 2) {
-                    System.out.println("Введите данные для обработки:");
-                    inputLine = scanner.nextLine();
-                    if (inputInt == 1) {
-                        System.out.println(camoufleur.camoufleure(Choice.FULLNAME, inputLine));
-                    } else if (inputInt == 2) {
-                        System.out.println(camoufleur.camoufleure(Choice.EMAIL, inputLine));
-                    }
-                } else if (inputInt == 3) {
-                    flagContinue = false;
-                    System.out.println("Программа завершена");
-                } else {
-                    throw new Exception("Ошибка: Только 1, 2 или 3");
-                }
-
-            } catch (NumberFormatException e) {
-                System.out.println("Ошибка: Только цифры");
-            } catch (WrongNameException e) {
-                //насколько я понимаю эта часть не имеет смысла,
-                // так как никакой новой информации здесь нет
-                System.out.println(e.getMessage());
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-
-
-        scanner.close();
-
-    }
-}
+//public class Main {
+//
+//    public static void main(String[] args) {
+//
+//
+//        Scanner scanner = new Scanner(System.in);
+//        Camoufleur camoufleur = new Camoufleur();
+//        boolean flagContinue = true;
+//        int inputInt;
+//        String inputLine;
+//
+//        while (flagContinue) {
+//            try {
+//                System.out.println("Введите “1” для обработки ФИО и “2” для обработки email или “3” для выхода");
+//                inputInt = Integer.parseInt(scanner.nextLine());
+//                if (inputInt == 1 || inputInt == 2) {
+//                    System.out.println("Введите данные для обработки:");
+//                    inputLine = scanner.nextLine();
+//                    if (inputInt == 1) {
+//                        System.out.println(camoufleur.camoufleure(Choice.FULLNAME, inputLine));
+//                    } else if (inputInt == 2) {
+//                        System.out.println(camoufleur.camoufleure(Choice.EMAIL, inputLine));
+//                    }
+//                } else if (inputInt == 3) {
+//                    flagContinue = false;
+//                    System.out.println("Программа завершена");
+//                } else {
+//                    throw new Exception("Ошибка: Только 1, 2 или 3");
+//                }
+//
+//            } catch (NumberFormatException e) {
+//                System.out.println("Ошибка: Только цифры");
+//            } catch (WrongNameException e) {
+//                //насколько я понимаю эта часть не имеет смысла,
+//                // так как никакой новой информации здесь нет
+//                System.out.println(e.getMessage());
+//            } catch (Exception e) {
+//                System.out.println(e.getMessage());
+//            }
+//        }
+//
+//
+//        scanner.close();
+//
+//    }
+//}

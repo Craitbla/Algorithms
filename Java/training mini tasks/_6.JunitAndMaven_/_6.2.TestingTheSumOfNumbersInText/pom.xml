@@ -9,9 +9,11 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javafx.platform>win</javafx.platform> <!-- Или `linux`, `mac` -->
     </properties>
 
     <build>
@@ -20,13 +22,23 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.4</version>
+                <configuration>
+                    <argLine>
+                        <!--                        -->
+                        -XX:+EnableDynamicAgentLoading
+                        --add-opens java.base/java.lang=ALL-UNNAMED
+                        --add-opens java.base/java.util=ALL-UNNAMED
+                        -Djdk.net.URLClassPath.disableClassPathURLCheck=true
+                        -Xshare:off
+                        ${argLine}
+                    </argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.12.1</version>
             </plugin>
-            <!--            <plugins>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
@@ -40,29 +52,41 @@
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.4.2</version>
             </plugin>
-            <plugin> <!-- для того чтобы показывало на какой строчке ошибка-->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>3.6.0</version>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.12</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
-        <!--        </plugins>-->
     </build>
 
+    <reporting>
+        <plugins>
+
+        </plugins>
+    </reporting>
+
     <dependencies>
-
-        <dependency>
-
-            <groupId>org.junit.jupiter</groupId>
-
-            <artifactId>junit-jupiter-engine</artifactId>
-
-            <version>5.11.0</version>
-
-            <scope>test</scope>
-
-        </dependency>
-
 
         <dependency>
 
@@ -77,22 +101,49 @@
         </dependency>
 
         <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.11.0</version>
+            <scope>test</scope>
+        </dependency>
 
-            <groupId>org.mockito</groupId>
+        <dependency>
 
-            <artifactId>mockito-core</artifactId>
+            <groupId>org.junit.jupiter</groupId>
 
-            <version>5.16.0</version>
+            <artifactId>junit-jupiter-engine</artifactId>
+
+            <version>5.11.0</version>
 
             <scope>test</scope>
 
         </dependency>
 
         <dependency>
+
+            <groupId>org.mockito</groupId>
+
+            <artifactId>mockito-core</artifactId>
+
+            <version>5.11.0</version>
+
+            <scope>test</scope>
+
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>5.11.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>26-ea+7</version> <!-- или более новая стабильная версия -->
+            <version>21.0.4</version>
         </dependency>
+
 
     </dependencies>
 

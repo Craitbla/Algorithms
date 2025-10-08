@@ -15,30 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.stream.Stream;
 
-//"Метод_Условие_ОжидаемыйРезультат".
-//MethodName_StateUnderTest_ExpectedBehavior
-//maskFullName_ValidInput_CorrectlyMasked
-
-// не Public!!!  и должен ЗАКАНЧИВАТЬСЯ на Test - *Test.java или *Tests.java
-
-//Моки
-//Надежность: Тест не сломается, если изменится логика валидации
-//Этот подход следует принципу "тестируй поведение, а не реализацию"
-// - мы проверяем, что при валидном email возвращается правильная маскировка,
-// а валидация действительно вызывается.
-
-//// Тестируем только координацию, а не логику валидации в моках
-//@Nested не статик, но
-//public static Stream<Arguments> provideValidFullName()
-//@MethodSource("org.example.Tests#provideValidFullName") !!!
-
-//@Mock
-//private Processor mockProcessor;
-//
-//@BeforeEach
-//    void setUp() {
-//            reset(mockProcessor); // Нужно сбрасывать между тестами
-//            } поэтому используют в каждом тесте Processor mock = mock(Processor.class); который не надо стирать потом
 @ExtendWith(MockitoExtension.class)
 class Tests {
     public static Stream<Arguments> provideValidFullName() {
@@ -167,8 +143,8 @@ class Tests {
         }
 
         @Nested
-        class DisguisersTests { //только хорошие случаи потому что исключений он ен выдает
-            FullNameDisguiser fullNameDisguiser = new FullNameDisguiser(); //чтоб наверняка
+        class DisguisersTests {
+            FullNameDisguiser fullNameDisguiser = new FullNameDisguiser();
 
             @ParameterizedTest
             @MethodSource("org.example.Tests#provideValidFullName")
@@ -189,7 +165,7 @@ class Tests {
         }
     }
 
-    @Nested //6+4
+    @Nested
     class UnitTests {
         @Mock
         private Validator mockedValidator;
@@ -199,9 +175,8 @@ class Tests {
         private Disguiser mockedDisguiser;
 
 
-        //         @InjectMocks работало бы если бы это бал бы не внутренний класс
         @Nested
-        class ProcessorsTests { //6
+        class ProcessorsTests {
             private Camoufleur.Processor processor;
 
             @BeforeEach
@@ -210,8 +185,6 @@ class Tests {
             }
 
             @ParameterizedTest
-//гпт не прав, по крайней мере у меня,
-// process_ValidInput_CallsAllComponentsInOrder точно видит и первый сурс и второй
             @MethodSource("org.example.Tests#provideValidFullName")
             @MethodSource("org.example.Tests#provideValidEmail")
             void process_ValidInput_CallsAllComponentsInOrder(
@@ -266,26 +239,19 @@ class Tests {
 
         }
 
-        //        @ExtendWith(MockitoExtension.class)//4 //уже есть
         @Nested
         class CamoufleurUnitTests {
-
-            //проблема была в том что функция принимающая енам
-            // не могла переварить интеджер и ломала работу метода
             private Camoufleur camoufleur = new Camoufleur(true);
-
-            //валидные
 
             @ParameterizedTest
             @MethodSource("org.example.Tests#provideValidFullName")
             void camoufleure_FullNameChoice_CallsFullNameProcessor(String input, String[] ignored, String expected) throws WrongNameException {
-                // Arrange
                 Camoufleur.Processor mockedProcessor = mock(Camoufleur.Processor.class);
                 camoufleur.processors.put(Choice.FULLNAME, mockedProcessor);
                 when(mockedProcessor.process(input)).thenReturn(expected);
-                // Act
+
                 String result = camoufleur.camoufleure(Choice.FULLNAME, input);
-                // Assert
+
                 Assertions.assertEquals(expected, result);
                 verify(mockedProcessor).process(input);
             }
@@ -293,34 +259,22 @@ class Tests {
             @ParameterizedTest
             @MethodSource("org.example.Tests#provideValidEmail")
             void camoufleure_EmailChoice_CallsEmailProcessor(String input, String[] ignored, String expected) throws WrongNameException {
-                // Arrange
                 Camoufleur.Processor mockedProcessor = mock(Camoufleur.Processor.class);
                 camoufleur.processors.put(Choice.EMAIL, mockedProcessor);
                 when(mockedProcessor.process(input)).thenReturn(expected);
-                // Act
+
                 String result = camoufleur.camoufleure(Choice.EMAIL, input);
-                // Assert
+
                 Assertions.assertEquals(expected, result);
                 verify(mockedProcessor).process(input);
             }
 
-            //не валидные
-
-            //по сути что в разных исключительных ситуациях
-            // сам комуфлир потом пробрасывает исключение которое берет от от выбранного процессора
-
-            //я не проверяю правильность описания исключения,
-            // а сам факт, поэтому даже быть параметризированным не надо
-
-            //любишь делать моки, лючи и поведение их прописывать, а иначе они null возвращают
             @Test
             void camoufleure_FullNameChoice_FullNameCamoufleurThrowsException() throws WrongNameException {
-                // Arrange
                 Camoufleur.Processor mockedProcessor = mock(Camoufleur.Processor.class);
                 camoufleur.processors.put(Choice.FULLNAME, mockedProcessor);
                 when(mockedProcessor.process("any input")).thenThrow(new WrongNameException("test"));
-                // Act#
-                // Assert#
+
                 assertThrows(WrongNameException.class, () -> camoufleur.camoufleure(Choice.FULLNAME, "any input"));
             }
 
@@ -332,24 +286,10 @@ class Tests {
                 assertThrows(WrongEmailException.class, () -> camoufleur.camoufleure(Choice.EMAIL, "any input"));
             }
         }
-//        @Nested
-//        class CamoufleurRoutingTests { //по идее не нужно, потому что самого рутинга уже и нет
-//            private Camoufleur camoufleur;
-//            @BeforeEach
-//            void setUp(){
-//                camoufleur = new Camoufleur();
-//            }
-//
-//
-//        }
-
     }
 
-    @Nested //10
-//    @DisplayName("Интеграционные тесты. Тесты полных сценариев без моков. ")
+    @Nested
     class IntegrationTests {
-        //без моков, гпт написал что процессор как контроллер,
-        // поэтому его тестить не надо, дублирование будет
         private Camoufleur camoufleur = new Camoufleur();
 
         @ParameterizedTest
@@ -373,7 +313,6 @@ class Tests {
         @ParameterizedTest
         @MethodSource("org.example.Tests#provideInvalidEmailForValidatorAndDisguiser")
         @MethodSource("org.example.Tests#provideInvalidEmailForParser")
-            //странно
         void Integration_InValidInput_ThrowsExceptionWrongEmail(String input, String expected) throws WrongNameException {
             WrongEmailException exception = assertThrows(
                     WrongEmailException.class,
