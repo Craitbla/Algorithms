@@ -1,5 +1,5 @@
-CREATE
-DATABASE university;
+-- Создание базы данных
+CREATE DATABASE university;
 
 -- Таблица "Преподаватели"
 CREATE TABLE teachers
@@ -20,42 +20,70 @@ CREATE TABLE courses
     FOREIGN KEY (TEACHER_ID) REFERENCES teachers (TEACHER_ID)
 );
 
--- Таблица "Студенты"
+-- Таблица "Студенты" (БЕЗ COURSE_ID - правильная нормализация)
 CREATE TABLE students
 (
     STUDENT_ID   SERIAL PRIMARY KEY,
     FULL_NAME    VARCHAR(100) NOT NULL,
     PHONE_NUMBER VARCHAR(20),
-    EMAIL        VARCHAR(50),
-    COURSE_ID    INT          NOT NULL,
-    FOREIGN KEY (COURSE_ID) REFERENCES courses (COURSE_ID)
+    EMAIL        VARCHAR(50)
+);
+
+-- Таблица для связи Многие-ко-многим (Student ↔ Course)
+CREATE TABLE student_courses
+(
+    ID SERIAL PRIMARY KEY,
+    STUDENT_ID INT NOT NULL,
+    COURSE_ID  INT NOT NULL,
+    ENROLLMENT_DATE DATE DEFAULT CURRENT_DATE,
+    GRADE INT,
+    FOREIGN KEY (STUDENT_ID) REFERENCES students (STUDENT_ID) ON DELETE CASCADE,
+    FOREIGN KEY (COURSE_ID) REFERENCES courses (COURSE_ID) ON DELETE CASCADE,
+    UNIQUE(STUDENT_ID, COURSE_ID)
 );
 
 -- Вставка преподавателей
 INSERT INTO teachers (FULL_NAME, PHONE_NUMBER, EMAIL)
-VALUES ('Анна Игоревна Ковалёва', '+7-900-123-45-67', 'anna.kovaleva@university.ru'),
-       ('Игорь Николаевич Петров', '+7-900-987-65-43', 'igor.petrov@university.ru'),
-       ('Мария Владимировна Сидорова', '+7-911-222-33-44', 'maria.sidorova@university.ru');
+VALUES 
+('Анна Игоревна Ковалёва', '+7-900-123-45-67', 'anna.kovaleva@university.ru'),
+('Игорь Николаевич Петров', '+7-900-987-65-43', 'igor.petrov@university.ru'),
+('Мария Владимировна Сидорова', '+7-911-222-33-44', 'maria.sidorova@university.ru');
 
 -- Вставка курсов
 INSERT INTO courses (COURSE_NAME, TEACHER_ID, DESCRIPTION)
-VALUES ('Введение в базы данных', 1, 'Основы проектирования и работы с базами данных'),
-       ('Философия', 2, 'Углубленное изучение работы с базами данных'),
-       ('Математический анализ', 3, 'Дифференциальное и интегральное исчисление');
+VALUES 
+('Введение в базы данных', 1, 'Основы проектирования и работы с базами данных'),
+('Философия', 2, 'Углубленное изучение работы с базами данных'),
+('Математический анализ', 3, 'Дифференциальное и интегральное исчисление');
 
--- Вставка студентов
-INSERT INTO students (FULL_NAME, PHONE_NUMBER, EMAIL, COURSE_ID)
-VALUES ('Мария Соколова', '+7-911-111-22-33', 'maria.sokolova@university.ru', 1),
-       ('Алексей Ветров', '+7-922-333-44-55', 'alexey.vetrov@university.ru', 1),
-       ('Елена Орлова', '+7-933-555-66-77', 'elena.orlova@university.ru', 2),
-       ('Дмитрий Новиков', '+7-944-777-88-99', 'dmitry.novikov@university.ru', 3);
+-- Вставка студентов (БЕЗ COURSE_ID)
+INSERT INTO students (FULL_NAME, PHONE_NUMBER, EMAIL)
+VALUES 
+('Мария Соколова', '+7-911-111-22-33', 'maria.sokolova@university.ru'),
+('Алексей Ветров', '+7-922-333-44-55', 'alexey.vetrov@university.ru'),
+('Елена Орлова', '+7-933-555-66-77', 'elena.orlova@university.ru'),
+('Дмитрий Новиков', '+7-944-777-88-99', 'dmitry.novikov@university.ru');
 
--- Посмотреть всех студентов с их курсами и преподавателями
+-- Создание связей студент-курс через таблицу student_courses
+INSERT INTO student_courses (STUDENT_ID, COURSE_ID, ENROLLMENT_DATE, GRADE)
+VALUES 
+(1, 1, '2024-01-15', 85),  -- Мария Соколова → Введение в БД
+(1, 2, '2024-01-16', 90),  -- Мария Соколова → Философия
+(2, 1, '2024-01-15', 78),  -- Алексей Ветров → Введение в БД  
+(2, 3, '2024-01-17', 92),  -- Алексей Ветров → Математический анализ
+(3, 2, '2024-01-16', 88),  -- Елена Орлова → Философия
+(3, 3, '2024-01-17', 95),  -- Елена Орлова → Математический анализ
+(4, 3, '2024-01-17', 91);  -- Дмитрий Новиков → Математический анализ
+
+-- Запрос для просмотра всех студентов с их курсами и преподавателями
 SELECT
     s.FULL_NAME as "Студент",
     c.COURSE_NAME as "Курс",
-    t.FULL_NAME as "Преподаватель"
+    t.FULL_NAME as "Преподаватель",
+    sc.GRADE as "Оценка",
+    sc.ENROLLMENT_DATE as "Дата зачисления"
 FROM students s
-         JOIN courses c ON s.COURSE_ID = c.COURSE_ID
-         JOIN teachers t ON c.TEACHER_ID = t.TEACHER_ID
+JOIN student_courses sc ON s.STUDENT_ID = sc.STUDENT_ID
+JOIN courses c ON sc.COURSE_ID = c.COURSE_ID
+JOIN teachers t ON c.TEACHER_ID = t.TEACHER_ID
 ORDER BY c.COURSE_NAME, s.FULL_NAME;

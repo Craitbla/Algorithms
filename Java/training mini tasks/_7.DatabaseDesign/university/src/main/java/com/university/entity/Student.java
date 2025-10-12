@@ -1,12 +1,15 @@
 package com.university.entity;
-
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "students")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "student_id")
     private Long id;
     @Column(name = "full_name", nullable = false)
     private String fullName;
@@ -14,16 +17,17 @@ public class Student {
     private String phoneNumber;
     @Column(name = "email")
     private String email;
-    private Long courseId;//+соединение
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<StudentCourse> studentCourses = new ArrayList<>();
+
 
     public  Student() {
     }
 
-    Student(String fullName, String phoneNumber, String email, Long courseId) {
+    public  Student(String fullName, String phoneNumber, String email) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.courseId = courseId;
     }
 
     Long getId() {
@@ -56,11 +60,11 @@ public class Student {
         this.email = email;
     }
 
-    public Long getCourseId() {
-        return courseId;
+    public List<StudentCourse> getStudentCourses() {
+        return studentCourses;
     }
 
-    public void setCourseId(Long courseId) {
-        this.courseId = courseId;
+    public void setStudentCourses(List<StudentCourse> studentCourses) {
+        this.studentCourses = studentCourses;
     }
 }
