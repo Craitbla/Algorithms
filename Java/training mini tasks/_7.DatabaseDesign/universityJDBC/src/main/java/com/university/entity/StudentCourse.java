@@ -1,30 +1,16 @@
 package com.university.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "student_course")
 public class StudentCourse {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "student_id", nullable = false)
     @JsonIgnore
     private Student student;
-//    @ManyToOne - много записей могут ссылаться на одного студента/один курс
-//Это владеющая сторона связей - здесь физически находятся foreign keys в БД
-    @ManyToOne
-    @JoinColumn(name = "course_id", nullable = false)
     @JsonIgnore
     private Course course;
-    @Column(name = "enrollment_date")
     private LocalDate enrollmentDate;
-    @Column(name =  "grade")
     private Integer grade;
 
     public StudentCourse() {

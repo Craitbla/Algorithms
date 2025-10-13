@@ -1,16 +1,19 @@
 package com.university.repository;
 import com.university.entity.Course;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Objects;
 
 @Repository
-public interface CourseRepository extends JpaRepository<Course, Long> {
-@Query("SELECT c.name, t.fullName, COUNT(sc.student) FROM Course c JOIN c.teacher t JOIN c.studentCourses sc GROUP BY c.name, t.fullName")
-List<Object[]> findCourseInfo();
+public class CourseRepository {
+
+
+
+}
+
+//@Query("SELECT c.name, t.fullName, COUNT(sc.student) FROM Course c JOIN c.teacher t JOIN c.studentCourses sc GROUP BY c.name, t.fullName")
+//List<Object[]> findCourseInfo();
 //    SELECT c.course_name, t.full_name, COUNT(sc.student_id) --по заданию
 //    FROM courses c
 //    JOIN teachers t USING(teacher_id)
@@ -22,4 +25,3 @@ List<Object[]> findCourseInfo();
 //[0] - название курса (String)
 //[1] - имя преподавателя (String)
 //[2] - количество студентов (Long)
-}

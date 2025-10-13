@@ -1,30 +1,17 @@
 package com.university.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "courses")
 public class Course {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "course_id")
     private Long id;
-    @Column(name = "name", nullable = false)
     private String name;
-    @OneToOne
-    @JoinColumn(name = "teacher_id", nullable = false)
-    @JsonIgnore
     private Teacher teacher; //teacherId
 
-//     - один курс может иметь много записей в таблице student_courses
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StudentCourse> studentCourses = new ArrayList<>();
 
-    @Column(name = "description")
     private String description;
 
     public Course() {
