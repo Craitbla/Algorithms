@@ -24,8 +24,7 @@ public class Teacher {
 
     public Teacher(){};
 
-    public Teacher(Long id, String fullName, String phoneNumber, String email) {
-        this.id = id;
+    public Teacher(String fullName, String phoneNumber, String email) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.email = email;
