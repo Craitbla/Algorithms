@@ -1,8 +1,6 @@
 package com.university.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -19,7 +17,7 @@ public class Course {
     private String name;
     @OneToOne
     @JoinColumn(name = "teacher_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private Teacher teacher; //teacherId
 
 //     - один курс может иметь много записей в таблице student_courses

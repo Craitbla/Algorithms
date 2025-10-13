@@ -29,11 +29,11 @@ public class Student {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
-
-    Long getId() {
+//забываю прописывать public/private (((
+    public Long getId() {
         return id;
     }
-    void setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getFullName() {

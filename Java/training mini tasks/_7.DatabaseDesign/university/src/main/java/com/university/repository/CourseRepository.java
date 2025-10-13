@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
-@Query("SELECT c.name, t.fullName, COUNT(sc.student) FROM Course c JOIN c.teacher t JOIN c.studentCourses sc GROUP BY (c.name)")
+@Query("SELECT c.name, t.fullName, COUNT(sc.student) FROM Course c JOIN c.teacher t JOIN c.studentCourses sc GROUP BY c.name, t.fullName")
 List<Object[]> findCourseInfo();
 //    SELECT c.course_name, t.full_name, COUNT(sc.student_id) --по заданию
 //    FROM courses c

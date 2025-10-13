@@ -44,23 +44,13 @@ public class UniversityApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("Программа запущена");
 
+        demonstrationCRUD();
         createTestData();
         getCoursesInformation();
-//        demonstrationCRUD();
-//        getCoursesInformation();
-        // 2. Создание тестовых данных
-        // 3. Демонстрация CRUD операций
-        // 4. Выполнение основного задания (информация о курсах)
-        // 5. Показать результаты в консоли
     }
 
 
     private void createTestData() {
-        //List<Teacher> teachersToSave = List.of(
-        //    new Teacher("Анна Игоревна Ковалёва", "...", "..."),
-        //    new Teacher("Игорь Николаевич Петров", "...", "..."),
-        //    new Teacher("Мария Владимировна Сидорova", "...", "...")
-        //);
         Teacher teacher1 = new Teacher("Анна Игоревна Ковалёва", "+7-900-123-45-67", "anna.kovaleva@university.ru");
         Teacher teacher2 = new Teacher("Игорь Николаевич Петров", "+7-900-987-65-43", "igor.petrov@university.ru");
         Teacher teacher3 = new Teacher("Мария Владимировна Сидорова", "+7-911-222-33-44", "maria.sidorova@university.ru");
