@@ -20,6 +20,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -45,19 +46,21 @@ public class UniversityApplication implements CommandLineRunner {
 
         createTestData();
         getCoursesInformation();
-        demonstrationCRUD();
-        // 1. Очистка базы (если нужно)
+//        demonstrationCRUD();
+//        getCoursesInformation();
         // 2. Создание тестовых данных
         // 3. Демонстрация CRUD операций
         // 4. Выполнение основного задания (информация о курсах)
         // 5. Показать результаты в консоли
     }
 
-    private void deleteDB() {
-
-    }
 
     private void createTestData() {
+        //List<Teacher> teachersToSave = List.of(
+        //    new Teacher("Анна Игоревна Ковалёва", "...", "..."),
+        //    new Teacher("Игорь Николаевич Петров", "...", "..."),
+        //    new Teacher("Мария Владимировна Сидорova", "...", "...")
+        //);
         Teacher teacher1 = new Teacher("Анна Игоревна Ковалёва", "+7-900-123-45-67", "anna.kovaleva@university.ru");
         Teacher teacher2 = new Teacher("Игорь Николаевич Петров", "+7-900-987-65-43", "igor.petrov@university.ru");
         Teacher teacher3 = new Teacher("Мария Владимировна Сидорова", "+7-911-222-33-44", "maria.sidorova@university.ru");
@@ -89,14 +92,37 @@ public class UniversityApplication implements CommandLineRunner {
     }
 
     private void demonstrationCRUD() {
-
+        //C
+        Student student = new Student("Афанасий Павлов", "+7-654-332-44-55", "AfPav@university.ru");
+        studentRepository.save(student);
+        System.out.println("Зачислен студент " + student.getFullName());
+        //R
+        List<Student> students = studentRepository.findAll();
+        System.out.println("Всего студентов: " + students.size());
+        //U
+        student.setFullName("Иванова Карина");
+        studentRepository.save(student);
+        System.out.println("Имя студента изменено на " + student.getFullName());
+        //D
+        studentRepository.delete(student);
+        students = studentRepository.findAll();
+        System.out.println("Всего студентов стало после удаления: " + students.size());
     }
 
     private void getCoursesInformation() {
+        List<Object[]> newTable = courseRepository.findCourseInfo();
+        String cName;
+        String tFullName;
+        Long countStudent;
+        for (Object[] str : newTable
+        ) {
+            cName = str[0].toString();
+            tFullName = str[1].toString();
+            countStudent = (Long) str[2];
+            System.out.println(cName + "\t"+tFullName + "\t"+ countStudent);
 
+
+        }
     }
 
-    private void printResult() {
-
-    }
 }
