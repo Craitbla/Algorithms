@@ -5,8 +5,11 @@ import com.university.entity.StudentCourse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,19 +45,40 @@ public class StudentRepository {
     // DELETE - удалить
     public void deleteById(Long id) {
         // Здесь будет код для DELETE
-        String sql = "DELETE * FROM students WHERE STUDENT_ID = ?";
-        jdbcTemplate.queryForObject(sql, rowMapper, id);
+        String sql = "DELETE FROM students WHERE STUDENT_ID = ?";
+        jdbcTemplate.update(sql, id);
     }
-//
-//    // UPDATE - обновить
-//    public void update(Student student) {
-//        // Здесь будет код для UPDATE
-//    }
-//
+
+    //
+//    // UPDATE - обновить //есть более крутая версия для всех типов классов,
+//    чтобы не делать для каждого, но там жесть с синтаксисом,
+//    я в такую западню сейчас вписываться не буду
+    public void update(Student student) {
+        String sql = "UPDATE students SET FULL_NAME = ?, PHONE_NUMBER = ?, EMAIL = ? WHERE STUDENT_ID = ?";
+        jdbcTemplate.update(sql, student.getFullName(), student.getPhoneNumber(), student.getEmail(), student.getId());
+    }
+
+    //
 //    // CREATE - сохранить студента
-//    public Student save(Student student) {
-//        // Здесь будет код для INSERT
-//    }
-
-
+    public Student save(Student student) {
+        if (student != null && student.getFullName() != null) {
+            if (student.getId() != null && findById(student.getId()).isPresent()) { //есть
+                update(student);
+            } else { //нет, сохранение
+                String sql = "INSERT INTO students (FULL_NAME, PHONE_NUMBER, EMAIL) VALUES (?, ?, ?)";
+                KeyHolder keyHolder = new GeneratedKeyHolder();
+                jdbcTemplate.update(connection -> {
+                    PreparedStatement ps = connection.prepareStatement(sql, new String[]{"STUDENT_ID"});
+                    ps.setString(1, student.getFullName());
+                    ps.setString(2, student.getPhoneNumber());
+                    ps.setString(3, student.getEmail());
+                    return ps;
+                }, keyHolder);
+                Number newId = keyHolder.getKey();
+                student.setId(newId.longValue());
+//                jdbcTemplate.update(sql, student.getFullName(), student.getPhoneNumber(), student.getEmail());
+            } //jdbcTemplate.update для CUD
+        }
+        return student;
+    }
 }
