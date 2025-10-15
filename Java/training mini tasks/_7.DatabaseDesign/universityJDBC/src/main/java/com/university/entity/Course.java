@@ -1,26 +1,19 @@
 package com.university.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 public class Course {
     private Long id;
     private String name;
-    private Teacher teacher; //teacherId
-
-    private List<StudentCourse> studentCourses = new ArrayList<>();
-
+    private Long teacherId;
     private String description;
 
     public Course() {
     }
 
-    public Course(String name, Teacher teacher, String description) {
-        this.id = id;
+    public Course(String name, Long teacherId, String description) {
         this.name = name;
-        this.teacher = teacher;
+        this.teacherId = teacherId;
         this.description = description;
     }
 
@@ -40,12 +33,12 @@ public class Course {
         this.name = name;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
+    public Long getTeacherId() {
+        return teacherId;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
     }
 
     public String getDescription() {
@@ -56,11 +49,26 @@ public class Course {
         this.description = description;
     }
 
-    public List<StudentCourse> getStudentCourses() {
-        return studentCourses;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return Objects.equals(id, course.id);
     }
 
-    public void setStudentCourses(List<StudentCourse> studentCourses) {
-        this.studentCourses = studentCourses;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", teacherId=" + teacherId +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

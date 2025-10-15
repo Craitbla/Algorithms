@@ -1,14 +1,12 @@
 package com.university.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 public class Student {
     private Long id;
     private String fullName;
     private String phoneNumber;
     private String email;
-    private List<StudentCourse> studentCourses = new ArrayList<>();
 
 
     public Student() {
@@ -53,27 +51,29 @@ public class Student {
         this.email = email;
     }
 
-    public List<StudentCourse> getStudentCourses() {
-        return studentCourses;
-    }
-
-    public void setStudentCourses(List<StudentCourse> studentCourses) {
-        this.studentCourses = studentCourses;
-    }
-
-    @Override
+    @Override //делается автоматически через insert
     public boolean equals(Object o) {
         if (this == o) return true; //сравнение ссылок
-        if (o == null || this.getClass() != o.getClass()) return false;
-        if (this == (Student))
-        //Сравниваются только id объектов - это бизнес-ключ для определения равенства
+        if (o == null || getClass() != o.getClass()) return false;
+        Student s = (Student) o;
+        return Objects.equals(id, s.id);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hashCode(id);
     }
-    //если равны сразу,
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+//если равны сразу,
     //если что-то из этого нулл и тд
     //прямое сравнение с приведением
 }

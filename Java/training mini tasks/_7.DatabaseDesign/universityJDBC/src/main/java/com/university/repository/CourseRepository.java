@@ -1,13 +1,23 @@
 package com.university.repository;
 import com.university.entity.Course;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
 @Repository
 public class CourseRepository {
+    private RowMapper<Course> rowMapper = (rs, rowNum) -> {
+        Course course = new Course();
+        course.setId(rs.getLong("COURSE_ID"));
+        course.setName(rs.getString("COURSE_NAME"));
+        course.setTeacher(rs.getTe("TEACHER_ID")); //на том пока и все
+        course.setDescription(rs.getString("DESCRIPTION"));
 
+    };
 
 
 }

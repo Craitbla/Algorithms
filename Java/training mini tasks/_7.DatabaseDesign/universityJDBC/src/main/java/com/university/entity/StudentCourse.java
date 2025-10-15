@@ -1,24 +1,21 @@
 package com.university.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class StudentCourse {
     private Long id;
-    @JsonIgnore
-    private Student student;
-    @JsonIgnore
-    private Course course;
+    private Long studentId;
+    private Long courseId;
     private LocalDate enrollmentDate;
     private Integer grade;
 
     public StudentCourse() {
     }
 
-    public StudentCourse(Student student, Course course, LocalDate enrollmentDate, Integer grade) {
-        this.student = student;
-        this.course = course;
+    public StudentCourse(Long studentId, Long courseId, LocalDate enrollmentDate, Integer grade) {
+        this.studentId = studentId;
+        this.courseId = courseId;
         this.enrollmentDate = enrollmentDate;
         this.grade = grade;
     }
@@ -31,20 +28,20 @@ public class StudentCourse {
         this.id = id;
     }
 
-    public Student getStudent() {
-        return student;
+    public Long getStudentId() {
+        return studentId;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
     }
 
-    public Course getCourse() {
-        return course;
+    public Long getCourseId() {
+        return courseId;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
     public LocalDate getEnrollmentDate() {
@@ -61,5 +58,29 @@ public class StudentCourse {
 
     public void setGrade(Integer grade) {
         this.grade = grade;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StudentCourse that = (StudentCourse) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "StudentCourse{" +
+                "id=" + id +
+                ", studentId=" + studentId +
+                ", courseId=" + courseId +
+                ", enrollmentDate=" + enrollmentDate +
+                ", grade=" + grade +
+                '}';
     }
 }

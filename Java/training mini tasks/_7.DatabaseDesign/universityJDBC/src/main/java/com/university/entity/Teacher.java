@@ -1,15 +1,12 @@
 package com.university.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import java.util.Objects;
+
 public class Teacher {
     private Long id;
     private  String fullName;
     private String phoneNumber;
     private String email;
-
-    @JsonIgnore
-    private Course course;
 
     public Teacher(){};
 
@@ -51,11 +48,27 @@ public class Teacher {
         this.email = email;
     }
 
-    public Course getCourse() {
-        return course;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Teacher teacher = (Teacher) o;
+        return Objects.equals(id, teacher.id);
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
