@@ -5,15 +5,15 @@ import org.springframework.jdbc.core.RowMapper;
 public class CourseInfoDTO {
     private String courseName;
     private String teacherFullName;
-    private int numOfStudents;
+    private int StudentCount;
 
     public CourseInfoDTO() {
     }
 
-    public CourseInfoDTO(String courseName, String teacherFullName, int numOfStudents) {
+    public CourseInfoDTO(String courseName, String teacherFullName, int StudentCount) {
         this.courseName = courseName;
         this.teacherFullName = teacherFullName;
-        this.numOfStudents = numOfStudents;
+        this.StudentCount = StudentCount;
     }
 
     public String getCourseName() {
@@ -33,11 +33,11 @@ public class CourseInfoDTO {
     }
 
     public int getNumOfStudents() {
-        return numOfStudents;
+        return StudentCount;
     }
 
-    public void setNumOfStudents(int numOfStudents) {
-        this.numOfStudents = numOfStudents;
+    public void setNumOfStudents(int StudentCount) {
+        this.StudentCount = StudentCount;
     }
 
 
@@ -47,11 +47,16 @@ public class CourseInfoDTO {
         return "CourseInfoDTO{" +
                 "courseName='" + courseName + '\'' +
                 ", teacherFullName='" + teacherFullName + '\'' +
-                ", numOfStudents=" + numOfStudents +
+                ", StudentCount=" + StudentCount +
                 '}';
     }
 
-    public static RowMapper<CourseInfoDTO> getRowMapper(){
-        return (rs, rowNum) -> new CourseInfoDTO(rs.getString("COURSE_NAME"), rs.getString("TEACHER_FULL_NAME"), rs.getInt("NUM_OF_STUDENTS"));
+//    public static RowMapper<CourseInfoDTO> getRowMapper(){
+//        return (rs, rowNum) -> new CourseInfoDTO(rs.getString("COURSE_NAME"), rs.getString("TEACHER_FULL_NAME"), rs.getInt("NUM_OF_STUDENTS"));
+//    }
+    public static RowMapper<CourseInfoDTO> getRowMapper(){ //смотреть именно на те названия которые делаются в select
+        return (rs, rowNum) -> new CourseInfoDTO(rs.getString("COURSE_NAME"),
+                rs.getString("FULL_NAME"),
+                rs.getInt("STUDENT_COUNT"));
     }
 }

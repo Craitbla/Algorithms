@@ -47,7 +47,7 @@ public class UniversityApplication implements CommandLineRunner {
 
 //        demonstrationCRUD();
 //        createTestData();
-//        getCoursesInformation();
+        getCoursesInformation();
     }
 
 //    private void checkTablesExistence() {
@@ -116,12 +116,15 @@ public class UniversityApplication implements CommandLineRunner {
 
     private void getCoursesInformation() {
         List<CourseInfoDTO> coursesInfo = courseRepository.findCourseInfo();
-
         for (CourseInfoDTO info : coursesInfo) {
             System.out.println(info.getCourseName() + "\t" +
                     info.getTeacherFullName() + "\t" +
                     info.getNumOfStudents());
         }
+//        List<Course> coursesInfo = courseRepository.fff();
+//        for (Course info : coursesInfo) {
+//            System.out.println(info.getId() + info.getTeacherId());
+//        }
     }
 
 }

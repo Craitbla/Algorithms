@@ -27,19 +27,23 @@ public class CourseRepository {
     };
 
     public List<CourseInfoDTO> findCourseInfo(){
-//        String sql = """
-//            SELECT
-//                c.COURSE_NAME,
-//                t.FULL_NAME,
-//                COUNT(sc.STUDENT_ID) as STUDENT_COUNT
-//            FROM courses c
-//            JOIN teachers t ON c.TEACHER_ID = t.TEACHER_ID
-//            JOIN student_courses sc ON c.COURSE_ID = sc.COURSE_ID
-//            GROUP BY c.COURSE_NAME, t.FULL_NAME
-//            """;
-        String sql = "SELECT COURSE_NAME FROM courses";
+        String sql = """
+            SELECT
+                c.COURSE_NAME,
+                t.FULL_NAME,
+                COUNT(sc.STUDENT_ID) as STUDENT_COUNT
+            FROM courses c
+            JOIN teachers t ON c.TEACHER_ID = t.TEACHER_ID
+            JOIN student_courses sc ON c.COURSE_ID = sc.COURSE_ID
+            GROUP BY c.COURSE_NAME, t.FULL_NAME
+            """;
         return jdbcTemplate.query(sql, CourseInfoDTO.getRowMapper());
     }
+
+//    public List<Course> fff() {
+//        String sql = "SELECT COURSE_ID FROM courses";
+//        return jdbcTemplate.query(sql, rowMapper);
+//    }
 
 }
 
