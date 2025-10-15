@@ -45,16 +45,16 @@ public class StudentRepository {
         String sql = "DELETE * FROM students WHERE STUDENT_ID = ?";
         jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
-
-    // UPDATE - обновить
-    public void update(Student student) {
-        // Здесь будет код для UPDATE
-    }
-
-    // CREATE - сохранить студента
-    public Student save(Student student) {
-        // Здесь будет код для INSERT
-    }
+//
+//    // UPDATE - обновить
+//    public void update(Student student) {
+//        // Здесь будет код для UPDATE
+//    }
+//
+//    // CREATE - сохранить студента
+//    public Student save(Student student) {
+//        // Здесь будет код для INSERT
+//    }
 
 
 }

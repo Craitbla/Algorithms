@@ -1,4 +1,5 @@
 package com.university;
+import com.university.dto.CourseInfoDTO;
 
 import com.university.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,24 @@ public class UniversityApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("Программа запущена");
 
-        demonstrationCRUD();
+//        demonstrationCRUD();
 //        createTestData();
-        getCoursesInformation();
+//        getCoursesInformation();
     }
+
+//    private void checkTablesExistence() {
+//        try {
+//            // Простой запрос к каждой таблице
+//            jdbcTemplate.queryForObject("SELECT COUNT(*) FROM courses", Integer.class);
+//            jdbcTemplate.queryForObject("SELECT COUNT(*) FROM teachers", Integer.class);
+//            jdbcTemplate.queryForObject("SELECT COUNT(*) FROM students", Integer.class);
+//            jdbcTemplate.queryForObject("SELECT COUNT(*) FROM student_courses", Integer.class);
+//            System.out.println("✅ Все таблицы существуют");
+//        } catch (Exception e) {
+//            System.out.println("❌ Ошибка доступа к таблицам: " + e.getMessage());
+//            System.out.println("⚠️  Проверьте SQL скрипты инициализации");
+//        }
+//    }
 
 
 //    private void createTestData() {
@@ -104,8 +119,8 @@ public class UniversityApplication implements CommandLineRunner {
 
         for (CourseInfoDTO info : coursesInfo) {
             System.out.println(info.getCourseName() + "\t" +
-                    info.getTeacherName() + "\t" +
-                    info.getStudentCount());
+                    info.getTeacherFullName() + "\t" +
+                    info.getNumOfStudents());
         }
     }
 
