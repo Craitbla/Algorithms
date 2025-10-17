@@ -48,16 +48,16 @@ public class UniversityApplication implements CommandLineRunner {
         System.out.println("Программа запущена");
 
 //        System.out.println(PrintFormatter.formatCourseInfo(courseRepository.findCourseInfo()));
-        courseRepository.checkTableExists();
+//        courseRepository.checkTableExists();
         demonstrationAllCRUD();
 
     }
 
     private void demonstrationAllCRUD(){
-//        demonstrationStudentsCRUD();
+        demonstrationStudentsCRUD();
+        demonstrationTeachersCRUD();
         demonstrationCoursesCRUD();
-//        demonstrationTeachersCRUD();
-//        demonstrationStudentCoursesCRUD();
+        demonstrationStudentCoursesCRUD();
     }
 
     private void demonstrationStudentsCRUD() {
@@ -93,45 +93,6 @@ public class UniversityApplication implements CommandLineRunner {
         PrintFormatter.printTable(studentRepository.findAll(), "Студенты после удаления");
 
         System.out.println("Конец демонстрации для студентов\n");
-    }
-
-    private void demonstrationCoursesCRUD() {
-        System.out.println("Демонстрация CRUD для курсов");
-//
-//        System.out.println("Изначальная таблица:");
-//        PrintFormatter.printTable(courseRepository.findAll(), "Курсы");
-
-//        //CREATE
-//        Course course = new Course();
-//        course.setName("Математический анализ");
-//        course.setTeacherId(1L);
-//        course.setDescription("Основы математического анализа для первокурсников");
-//        courseRepository.save(course);
-//        System.out.println("Создан курс: " + course.getName());
-//        PrintFormatter.printTable(courseRepository.findAll(), "Курсы после добавления");
-//        System.out.println("Новоустановленный id курса = " + course.getId());
-
-        //READ
-        Student foundStudent = studentRepository.findById(1L).orElseThrow();
-        PrintFormatter.printStudent(foundStudent);
-
-        Course foundCourse = courseRepository.findById(1L).orElseThrow();
-        System.out.println("Найден курс с id = 1");
-        PrintFormatter.printCourse(foundCourse);
-
-//        //UPDATE
-//        foundCourse.setName("Продвинутый математический анализ");
-//        foundCourse.setDescription("Углубленный курс математического анализа");
-//        courseRepository.save(foundCourse);
-//        System.out.println("Название курса c id = 1 изменено на: " + foundCourse.getName());
-//        PrintFormatter.printTable(courseRepository.findAll(), "Курсы после обновления");
-//
-//        //DELETE
-//        courseRepository.deleteById(1L);
-//        System.out.println("Удален курс с id = 1");
-//        PrintFormatter.printTable(courseRepository.findAll(), "Курсы после удаления");
-
-        System.out.println("Конец демонстрации для курсов\n");
     }
 
     private void demonstrationTeachersCRUD() {
@@ -170,6 +131,43 @@ public class UniversityApplication implements CommandLineRunner {
         System.out.println("Конец демонстрации для преподавателей\n");
     }
 
+    private void demonstrationCoursesCRUD() {
+        System.out.println("Демонстрация CRUD для курсов");
+
+        System.out.println("Изначальная таблица:");
+        PrintFormatter.printTable(courseRepository.findAll(), "Курсы");
+
+        //CREATE
+        Course course = new Course();
+        course.setName("Математический анализ");
+        course.setTeacherId(2L);
+        course.setDescription("Основы математического анализа для первокурсников");
+        courseRepository.save(course);
+        System.out.println("Создан курс: " + course.getName());
+        PrintFormatter.printTable(courseRepository.findAll(), "Курсы после добавления");
+        System.out.println("Новоустановленный id курса = " + course.getId());
+
+        //READ
+
+        Course foundCourse = courseRepository.findById(2L).orElseThrow();
+        System.out.println("Найден курс с id = 2");
+        PrintFormatter.printCourse(foundCourse);
+
+        //UPDATE
+        foundCourse.setName("Продвинутый математический анализ");
+        foundCourse.setDescription("Углубленный курс математического анализа");
+        courseRepository.save(foundCourse);
+        System.out.println("Название курса c id = 2 изменено на: " + foundCourse.getName());
+        PrintFormatter.printTable(courseRepository.findAll(), "Курсы после обновления");
+
+        //DELETE
+        courseRepository.deleteById(2L);
+        System.out.println("Удален курс с id = 2");
+        PrintFormatter.printTable(courseRepository.findAll(), "Курсы после удаления");
+
+        System.out.println("Конец демонстрации для курсов\n");
+    }
+
     private void demonstrationStudentCoursesCRUD() {
         System.out.println("Демонстрация CRUD для записей на курсы");
 
@@ -184,7 +182,7 @@ public class UniversityApplication implements CommandLineRunner {
 
         Course course = new Course();
         course.setName("Тестовый Курс");
-        course.setTeacherId(1L);
+        course.setTeacherId(3L);
         course.setDescription("Курс для демонстрации");
         courseRepository.save(course);
 
