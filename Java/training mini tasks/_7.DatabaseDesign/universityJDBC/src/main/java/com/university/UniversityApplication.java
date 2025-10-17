@@ -47,15 +47,17 @@ public class UniversityApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("Программа запущена");
 
-        System.out.println(PrintFormatter.formatCourseInfo(courseRepository.findCourseInfo()));
+//        System.out.println(PrintFormatter.formatCourseInfo(courseRepository.findCourseInfo()));
+        courseRepository.checkTableExists();
         demonstrationAllCRUD();
+
     }
 
     private void demonstrationAllCRUD(){
-        demonstrationStudentsCRUD();
-        demonstrationTeachersCRUD();
+//        demonstrationStudentsCRUD();
         demonstrationCoursesCRUD();
-        demonstrationStudentCoursesCRUD();
+//        demonstrationTeachersCRUD();
+//        demonstrationStudentCoursesCRUD();
     }
 
     private void demonstrationStudentsCRUD() {
@@ -95,36 +97,39 @@ public class UniversityApplication implements CommandLineRunner {
 
     private void demonstrationCoursesCRUD() {
         System.out.println("Демонстрация CRUD для курсов");
+//
+//        System.out.println("Изначальная таблица:");
+//        PrintFormatter.printTable(courseRepository.findAll(), "Курсы");
 
-        System.out.println("Изначальная таблица:");
-        PrintFormatter.printTable(courseRepository.findAll(), "Курсы");
-
-        //CREATE
-        Course course = new Course();
-        course.setName("Математический анализ");
-        course.setTeacherId(1L);
-        course.setDescription("Основы математического анализа для первокурсников");
-        courseRepository.save(course);
-        System.out.println("Создан курс: " + course.getName());
-        PrintFormatter.printTable(courseRepository.findAll(), "Курсы после добавления");
-        System.out.println("Новоустановленный id курса = " + course.getId());
+//        //CREATE
+//        Course course = new Course();
+//        course.setName("Математический анализ");
+//        course.setTeacherId(1L);
+//        course.setDescription("Основы математического анализа для первокурсников");
+//        courseRepository.save(course);
+//        System.out.println("Создан курс: " + course.getName());
+//        PrintFormatter.printTable(courseRepository.findAll(), "Курсы после добавления");
+//        System.out.println("Новоустановленный id курса = " + course.getId());
 
         //READ
+        Student foundStudent = studentRepository.findById(1L).orElseThrow();
+        PrintFormatter.printStudent(foundStudent);
+
         Course foundCourse = courseRepository.findById(1L).orElseThrow();
         System.out.println("Найден курс с id = 1");
         PrintFormatter.printCourse(foundCourse);
 
-        //UPDATE
-        foundCourse.setName("Продвинутый математический анализ");
-        foundCourse.setDescription("Углубленный курс математического анализа");
-        courseRepository.save(foundCourse);
-        System.out.println("Название курса c id = 1 изменено на: " + foundCourse.getName());
-        PrintFormatter.printTable(courseRepository.findAll(), "Курсы после обновления");
-
-        //DELETE
-        courseRepository.deleteById(1L);
-        System.out.println("Удален курс с id = 1");
-        PrintFormatter.printTable(courseRepository.findAll(), "Курсы после удаления");
+//        //UPDATE
+//        foundCourse.setName("Продвинутый математический анализ");
+//        foundCourse.setDescription("Углубленный курс математического анализа");
+//        courseRepository.save(foundCourse);
+//        System.out.println("Название курса c id = 1 изменено на: " + foundCourse.getName());
+//        PrintFormatter.printTable(courseRepository.findAll(), "Курсы после обновления");
+//
+//        //DELETE
+//        courseRepository.deleteById(1L);
+//        System.out.println("Удален курс с id = 1");
+//        PrintFormatter.printTable(courseRepository.findAll(), "Курсы после удаления");
 
         System.out.println("Конец демонстрации для курсов\n");
     }

@@ -3,6 +3,7 @@ package com.university.repository;
 import com.university.entity.Course;
 import com.university.dto.CourseInfoDTO;
 
+import com.university.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,10 +20,19 @@ public class CourseRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    public void checkTableExists() { ///////////////////
+        try {
+            jdbcTemplate.execute("SELECT 1 FROM courses");
+            System.out.println("Таблица courses существует");
+        } catch (Exception e) {
+            System.out.println("Таблица courses НЕ существует: " + e.getMessage());
+        }
+    }
+
     private RowMapper<Course> rowMapper = (rs, rowNum) -> {
         Course course = new Course();
         course.setId(rs.getLong("COURSE_ID"));
-        course.setName(rs.getString("NAME"));
+        course.setName(rs.getString("COURSE_NAME"));
         course.setTeacherId(rs.getLong("TEACHER_ID"));
         course.setDescription(rs.getString("DESCRIPTION"));
         return course;
