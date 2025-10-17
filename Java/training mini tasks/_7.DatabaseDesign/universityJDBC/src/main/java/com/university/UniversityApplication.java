@@ -139,9 +139,9 @@ public class UniversityApplication implements CommandLineRunner {
 
         //CREATE
         Course course = new Course();
-        course.setName("Математический анализ");
+        course.setName("История");
         course.setTeacherId(2L);
-        course.setDescription("Основы математического анализа для первокурсников");
+        course.setDescription("Основы истории для первокурсников");
         courseRepository.save(course);
         System.out.println("Создан курс: " + course.getName());
         PrintFormatter.printTable(courseRepository.findAll(), "Курсы после добавления");
