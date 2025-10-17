@@ -47,8 +47,7 @@ public class UniversityApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("Программа запущена");
 
-//        System.out.println(PrintFormatter.formatCourseInfo(courseRepository.findCourseInfo()));
-//        courseRepository.checkTableExists();
+        System.out.println(PrintFormatter.formatCourseInfo(courseRepository.findCourseInfo()));
         demonstrationAllCRUD();
 
     }
