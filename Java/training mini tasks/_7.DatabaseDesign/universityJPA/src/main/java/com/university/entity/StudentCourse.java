@@ -16,8 +16,6 @@ public class StudentCourse {
     @JoinColumn(name = "student_id", nullable = false)
     @JsonIgnore
     private Student student;
-//    @ManyToOne - много записей могут ссылаться на одного студента/один курс
-//Это владеющая сторона связей - здесь физически находятся foreign keys в БД
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     @JsonIgnore

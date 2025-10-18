@@ -18,9 +18,7 @@ public class Course {
     @OneToOne
     @JoinColumn(name = "teacher_id", nullable = false)
     @JsonIgnore
-    private Teacher teacher; //teacherId
-
-//     - один курс может иметь много записей в таблице student_courses
+    private Teacher teacher;
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StudentCourse> studentCourses = new ArrayList<>();
 

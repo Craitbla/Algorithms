@@ -57,7 +57,6 @@ public class UniversityApplication implements CommandLineRunner {
 
         teacherRepository.saveAll(List.of(teacher1, teacher2, teacher3));
 
-        //teacherRepository.findById(teacher1.getId()).orElseThrow()
         Course course1 = new Course("Введение в базы данных", teacher1, "Основы проектирования и работы с базами данных");
         Course course2 = new Course("Философия", teacher2, "Углубленное изучение работы с базами данных");
         Course course3 = new Course("Математический анализ", teacher3, "Дифференциальное и интегральное исчисление");

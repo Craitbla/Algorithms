@@ -29,7 +29,6 @@ public class Student {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
-//забываю прописывать public/private (((
     public Long getId() {
         return id;
     }
