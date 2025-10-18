@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +25,6 @@ public class StudentCourseRepository {
         studentCourse.setStudentId(rs.getLong("STUDENT_ID"));
         studentCourse.setCourseId(rs.getLong("COURSE_ID"));
 
-        // Конвертация java.sql.Date в LocalDate
         java.sql.Date sqlDate = rs.getDate("ENROLLMENT_DATE");
         if (sqlDate != null) {
             studentCourse.setEnrollmentDate(sqlDate.toLocalDate());

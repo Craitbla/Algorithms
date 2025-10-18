@@ -1,7 +1,6 @@
 package com.university.repository;
 
 import com.university.entity.Student;
-import com.university.entity.StudentCourse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -43,30 +42,21 @@ public class StudentRepository {
             return Optional.empty();
         }
     }
-
-    // DELETE - удалить
     public void deleteById(Long id) {
-        // Здесь будет код для DELETE
         String sql = "DELETE FROM students WHERE STUDENT_ID = ?";
         jdbcTemplate.update(sql, id);
     }
 
-    //
-//    // UPDATE - обновить //есть более крутая версия для всех типов классов,
-//    чтобы не делать для каждого, но там жесть с синтаксисом,
-//    я в такую западню сейчас вписываться не буду
     public void update(Student student) {
         String sql = "UPDATE students SET FULL_NAME = ?, PHONE_NUMBER = ?, EMAIL = ? WHERE STUDENT_ID = ?";
         jdbcTemplate.update(sql, student.getFullName(), student.getPhoneNumber(), student.getEmail(), student.getId());
     }
 
-    //
-//    // CREATE - сохранить студента
     public Student save(Student student) {
         if (student != null && student.getFullName() != null) {
-            if (student.getId() != null && findById(student.getId()).isPresent()) { //есть
+            if (student.getId() != null && findById(student.getId()).isPresent()) {
                 update(student);
-            } else { //нет, сохранение
+            } else {
                 String sql = "INSERT INTO students (FULL_NAME, PHONE_NUMBER, EMAIL) VALUES (?, ?, ?)";
                 KeyHolder keyHolder = new GeneratedKeyHolder();
                 jdbcTemplate.update(connection -> {
@@ -78,8 +68,7 @@ public class StudentRepository {
                 }, keyHolder);
                 Number newId = keyHolder.getKey();
                 student.setId(newId.longValue());
-//                jdbcTemplate.update(sql, student.getFullName(), student.getPhoneNumber(), student.getEmail());
-            } //jdbcTemplate.update для CUD
+            }
         }
         return student;
     }

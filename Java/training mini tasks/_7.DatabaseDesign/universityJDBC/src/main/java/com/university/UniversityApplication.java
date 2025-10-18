@@ -1,13 +1,11 @@
 package com.university;
 
-import com.university.dto.CourseInfoDTO;
 import com.university.utils.PrintFormatter;
 
 import com.university.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.university.entity.Course;
 import com.university.entity.Student;
@@ -15,17 +13,6 @@ import com.university.entity.Teacher;
 import com.university.entity.StudentCourse;
 
 import com.university.repository.StudentRepository;
-import com.university.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringBootApplication
 public class UniversityApplication implements CommandLineRunner {

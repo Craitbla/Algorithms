@@ -18,7 +18,6 @@ public class Student {
         this.email = email;
     }
 
-    //забываю прописывать public/private (((
     public Long getId() {
         return id;
     }
@@ -51,9 +50,9 @@ public class Student {
         this.email = email;
     }
 
-    @Override //делается автоматически через insert
+    @Override
     public boolean equals(Object o) {
-        if (this == o) return true; //сравнение ссылок
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student s = (Student) o;
         return Objects.equals(id, s.id);
@@ -73,7 +72,4 @@ public class Student {
                 ", email='" + email + '\'' +
                 '}';
     }
-//если равны сразу,
-    //если что-то из этого нулл и тд
-    //прямое сравнение с приведением
 }

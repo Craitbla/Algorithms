@@ -19,13 +19,6 @@ public class PrintFormatter {
                 .append("│ Название курса       │ Преподаватель        │ Студентов       │\n")
                 .append("├──────────────────────┼──────────────────────┼─────────────────┤\n");
 
-//        for (CourseInfoDTO info : coursesInfo) {
-//            sb.append(String.format("│ %-20s │ %-20s │ %-15d │\n",
-//                    truncate(info.getCourseName(), 20),
-//                    truncate(info.getTeacherFullName(), 20),
-//                    info.getNumOfStudents()
-//            ));
-//        }
         for (CourseInfoDTO info : coursesInfo) {
             sb.append(String.format("│ %-20s │ %-20s │ %-15d │\n",
                     truncate(info.courseName(), 20),

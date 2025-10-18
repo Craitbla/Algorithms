@@ -22,15 +22,6 @@ public class CourseRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-//    public void checkTableExists() { ///////////////////
-//        try {
-//            jdbcTemplate.execute("SELECT 1 FROM courses");
-//            System.out.println("Таблица courses существует");
-//        } catch (Exception e) {
-//            System.out.println("Таблица courses НЕ существует: " + e.getMessage());
-//        }
-//    }
-
     private RowMapper<Course> rowMapper = (rs, rowNum) -> {
         Course course = new Course();
         course.setId(rs.getLong("COURSE_ID"));
